@@ -3,6 +3,7 @@
 export(assess_tm_quality)
 export(bow_from_doclist)
 export(bow_metrics)
+export(clean_string)
 export(count_in_window)
 export(cvar)
 export(faultlines_demdiff)

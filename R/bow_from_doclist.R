@@ -47,14 +47,7 @@ bow_from_doclist <- function(x,
   count <- NULL
   
   
-  bow <- as.character(x) %>%
-    str_replace_all(pattern = "-", replacement = " ") %>%
-    str_replace_all(pattern = "[^[:alnum:]]", replacement = " ") %>%
-    tolower() %>%
-    removeNumbers() %>%
-    removePunctuation() %>%
-    removeWords(words = stopwords(language)) %>%
-    stripWhitespace()
+  bow <- buildR::clean_string(x, language)
 
   # Remove specified additional words
   if (!is.null(rm_words)) bow <- removeWords(bow, words = rm_words)
