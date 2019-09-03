@@ -18,5 +18,6 @@ clean_string <- function(x, language = "english"){
     tm::removeNumbers() %>%
     tm::removePunctuation() %>%
     tm::removeWords(words = stopwords(language)) %>%
-    tm::stripWhitespace()
+    tm::stripWhitespace() %>%
+    trimws()
 }
