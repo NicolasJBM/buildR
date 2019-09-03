@@ -18,8 +18,8 @@ format_ascii <- function(x){
     unlist()
   
   split=strsplit(x,split='')
-  m=lapply(split,match, lexana::toascii$mapL)
-  mapply(function(split,m) paste(ifelse(is.na(m),split,lexana::toascii$mapA[m]),collapse='') , split, m)
+  m=lapply(split,match, buildR::toascii$mapL)
+  mapply(function(split,m) paste(ifelse(is.na(m),split,buildR::toascii$mapA[m]),collapse='') , split, m)
   
   x <- x %>%
     stringi::stri_trans_general(id = "ascii") %>%

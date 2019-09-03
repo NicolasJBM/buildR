@@ -1,3 +1,4 @@
+#' Return various metrics to evaluate topic model performance for different topic numbers.
 #' @param doc_to_term dtm object.
 #' @param topic_nbr Numeric vector
 #' @param prevalence Formula

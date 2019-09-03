@@ -3,25 +3,6 @@
 #' @param subgroup character. Name of the variable indicating subgroups memberships.
 #' @return A dataframe with one row (for the whole group) containing the index of demographic difference (DemDiff).
 #' @references Li, J., and D. C. Hambrick. 2005. Factional groups: A new vantage on demographic faultlines, conflict, and disintegration in work teams. Academy of Management Journal 48 (5): 794–813.
-#' @examples
-#' library(construct)
-#' data("fictiveteams")
-#' # prepare the data: group the observations per team, scale between 0 and 1, identify subgroups
-#' library(dplyr)
-#' library(tidyr)
-#' library(purrr)
-#' fl <- fictiveteams %>%
-#'    group_by(team) %>%
-#'    nest() %>%
-#'    mutate(data = map(data, make_0_to_1)) %>%
-#'    mutate(subgp = map(data, find_subgroups, gpnbr = 2)) %>%
-#'    unnest()
-#' # Compute demographic differences
-#' fl %>%
-#'    group_by(team) %>%
-#'    nest() %>%
-#'    mutate(data = map(data, faultlines_demdiff, subgroup = "subgroup")) %>%
-#'    unnest()
 #' @seealso make_0_to_1
 #' @seealso find_subgroups
 #' @importFrom dplyr %>%

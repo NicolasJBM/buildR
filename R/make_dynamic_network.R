@@ -5,21 +5,6 @@
 #' @param threshold numeric. Minimum value of the weighting attribute for the relationship to be maintained.
 #' @param cores integer. Number of cores to be used for parallel computing.
 #' @return A dynamic network which can be rendered with render.d3movie
-#' @examples 
-#' library(construct)
-#' data("fictivetmpnet")
-#' dynet <- make_dynamic_network(fictivetmpnet, period = "period", weight = "weight", threshold = 0.5)
-#' library(ndtv)
-#' slice.par <- list(start=0,end=2,interval=1, aggregate.dur=2,rule="latest")
-#' dynet <- compute.animation(dynet,slice.par=slice.par,
-#'                            verbose=FALSE,
-#'                            chain.direction = "reverse")
-#' render.d3movie(dynet,
-#'                edge.col="darkgray",
-#'                displaylabels=TRUE,label.cex=1,
-#'                label.col="blue", verbose=FALSE,
-#'                main='Temporal Network',
-#'                output.mode = 'htmlWidget')
 #' @importFrom dplyr %>%
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select

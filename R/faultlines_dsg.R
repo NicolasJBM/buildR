@@ -2,25 +2,6 @@
 #' @param x dataframe. Binary variables indicating the categorical memberships of group members.
 #' @param subgroup character. Name of the variable indicating subgroup membership.
 #' @return A dataframe with one row per attribute specifying the contribution of each attribute to subgroups internal alignements, cross group alignement, and faultline.
-#' @examples 
-#' library(construct)
-#' data("fictiveteams")
-#' # prepare the data: group the observations per team, dichotomize variables and identify subgroups
-#' library(dplyr)
-#' library(tidyr)
-#' library(purrr)
-#' fl <- fictiveteams %>%
-#'    group_by(team) %>%
-#'    nest() %>%
-#'    mutate(data = map(data, make_discrete, ncat = 2, method = "km")) %>%
-#'    mutate(subgp = map(data, find_subgroups, gpnbr = 2)) %>%
-#'    unnest()
-#' # Compute demographic differences
-#' fl %>%
-#'    group_by(team) %>%
-#'    nest() %>%
-#'    mutate(data = map(data, faultlines_dsg, subgroup = "subgroup")) %>%
-#'    unnest()
 #' @seealso make_discrete
 #' @seealso find_subgroups
 #' @importFrom dplyr %>%

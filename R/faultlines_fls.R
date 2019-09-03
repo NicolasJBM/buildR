@@ -4,25 +4,6 @@
 #' @return A dataframe specifying the subgroups internal alignement (FLS_IA_0, FLS_IA_1, FLS_IA), the cross-subgroups alignment (FLS_CGA), and the faultline score (FLS).
 #' @seealso make_discrete
 #' @seealso find_subgroups
-#' @examples 
-#' library(construct)
-#' data("fictiveteams")
-#' # prepare the data: group the observations per team, dichotomize variables and identify subgroups
-#' library(dplyr)
-#' library(tidyr)
-#' library(purrr)
-#' fl <- fictiveteams %>%
-#'    group_by(team) %>%
-#'    nest() %>%
-#'    mutate(data = map(data, make_discrete, ncat = 2, method = "km")) %>%
-#'    mutate(subgp = map(data, find_subgroups, gpnbr = 2)) %>%
-#'    unnest()
-#' # Compute demographic differences
-#' fl %>%
-#'    group_by(team) %>%
-#'    nest() %>%
-#'    mutate(data = map(data, faultlines_fls, subgroup = "subgroup")) %>%
-#'    unnest()
 #' @references Shaw, J. B. 2004. The Development and Analysis of a Measure of Group Faultlines. Organizational Research Methods 7 (1): 66–100.
 #' @importFrom dplyr %>%
 #' @importFrom dplyr select
