@@ -4,7 +4,7 @@
 \alias{clean_string}
 \title{Simplify and clean a text.}
 \usage{
-clean_string(x, language = "english")
+clean_string(x)
 }
 \arguments{
 \item{x}{character. Text to be cleaned.}
