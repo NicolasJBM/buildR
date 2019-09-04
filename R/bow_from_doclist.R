@@ -47,7 +47,8 @@ bow_from_doclist <- function(x,
   count <- NULL
   
   
-  bow <- buildR::clean_string(x, language)
+  bow <- buildR::clean_string(x, language) %>%
+    tm::removeWords(words = stopwords(language))
 
   # Remove specified additional words
   if (!is.null(rm_words)) bow <- removeWords(bow, words = rm_words)

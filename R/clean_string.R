@@ -6,18 +6,16 @@
 #' @importFrom stringr str_replace_all
 #' @importFrom tm removeNumbers
 #' @importFrom tm removePunctuation
-#' @importFrom tm removeWords
 #' @importFrom tm stripWhitespace
 #' @export
 
-clean_string <- function(x, language = "english"){
+clean_string <- function(x){
   x %>%
     as.character() %>%
     tolower() %>%
     stringr::str_replace_all(pattern = "-", replacement = " ") %>%
     tm::removeNumbers() %>%
     tm::removePunctuation() %>%
-    tm::removeWords(words = stopwords(language)) %>%
     tm::stripWhitespace() %>%
     trimws()
 }
