@@ -1,6 +1,5 @@
 #' Transform the documents stored in a dataframe in a bag of words.
 #' @param x            character. Content to transform in a bag of words.
-#' @param language     character string. Language for the stopwords to remove.
 #' @param rm_words     character vector. List of words (or n-tokens) to remove.
 #' @param min_nchar    integer. Number of characters below which the word is removed.
 #' @param match_term   dataframe. Table with two variables: "word" for the string in the content and "term" for its categorization. Match words to force desired completions.
@@ -31,11 +30,11 @@
 #' @export
 
 bow_from_doclist <- function(x,
-                             language = "english",
                              rm_words = NULL,
                              min_nchar = 3,
                              match_term = NULL) {
-  stopifnot(is.character(language), is.numeric(min_nchar))
+  
+  stopifnot(is.numeric(min_nchar))
 
   # bind variables
   stem <- NULL
@@ -47,8 +46,7 @@ bow_from_doclist <- function(x,
   count <- NULL
   
   
-  bow <- buildR::clean_string(x, language) %>%
-    tm::removeWords(words = stopwords(language))
+  bow <- buildR::clean_string(x)
 
   # Remove specified additional words
   if (!is.null(rm_words)) bow <- removeWords(bow, words = rm_words)

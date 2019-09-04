@@ -1,6 +1,5 @@
 #' Simplify and clean a text.
 #' @param x            character. Text to be cleaned.
-#' @param language     character string. Language for the stopwords to remove.
 #' @return A clean text.
 #' @importFrom dplyr %>%
 #' @importFrom stringr str_replace_all

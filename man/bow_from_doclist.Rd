@@ -4,13 +4,11 @@
 \alias{bow_from_doclist}
 \title{Transform the documents stored in a dataframe in a bag of words.}
 \usage{
-bow_from_doclist(x, language = "english", rm_words = NULL,
-  min_nchar = 3, match_term = NULL)
+bow_from_doclist(x, rm_words = NULL, min_nchar = 3,
+  match_term = NULL)
 }
 \arguments{
 \item{x}{character. Content to transform in a bag of words.}
-
-\item{language}{character string. Language for the stopwords to remove.}
 
 \item{rm_words}{character vector. List of words (or n-tokens) to remove.}
 

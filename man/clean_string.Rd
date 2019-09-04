@@ -8,8 +8,6 @@ clean_string(x)
 }
 \arguments{
 \item{x}{character. Text to be cleaned.}
-
-\item{language}{character string. Language for the stopwords to remove.}
 }
 \value{
 A clean text.
