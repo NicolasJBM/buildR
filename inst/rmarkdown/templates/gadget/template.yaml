@@ -1,0 +1,4 @@
+name: Gadget
+description: Template for Shiny gadgets.
+create_dir: true
+

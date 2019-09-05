@@ -1,0 +1,8 @@
+---
+title: "Untitled"
+author: "Nicolas Mangin"
+date: "9/3/2019"
+output: pdf_document
+---
+
+Unzip the folder to access the resources.
