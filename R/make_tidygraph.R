@@ -1,4 +1,4 @@
-#' Make an tidygraph from en edgelist and a set of nodes attributes.
+#' Make an tidygraph from an edgelist and a set of nodes attributes.
 #' @param x                Tibble. Edge list; the two first variables have to be "from" and "to", the subsequent ones are treated as edge properties.
 #' @param nodes_properties Tibble. Properties of the nodes. The first variable has to be called "name" and contain the node id/label. Subsequent variables are treated as node properties.
 #' @return A tidygraph

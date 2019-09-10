@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_tidygraph.R
 \name{make_tidygraph}
 \alias{make_tidygraph}
-\title{Make an tidygraph from en edgelist and a set of nodes attributes.}
+\title{Make an tidygraph from an edgelist and a set of nodes attributes.}
 \usage{
 make_tidygraph(x, nodes_properties = NULL)
 }
@@ -15,5 +15,5 @@ make_tidygraph(x, nodes_properties = NULL)
 A tidygraph
 }
 \description{
-Make an tidygraph from en edgelist and a set of nodes attributes.
+Make an tidygraph from an edgelist and a set of nodes attributes.
 }
