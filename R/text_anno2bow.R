@@ -20,7 +20,7 @@ text_anno2bow <- function(x,
   
   stopifnot(
     base %in% c("lemma","word"),
-    length(intersect(x$type, keep)) > 0
+    length(intersect(x$pos, keep)) > 0
   )
   
   names(x) <- stringr::str_replace(names(x), base, "term")
