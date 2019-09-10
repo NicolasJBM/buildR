@@ -19,7 +19,7 @@ text_annotate <- function(x, model){
   token_id <- NULL
   
   ud_model <- udpipe::udpipe_load_model(model)
-  x <- as.data.frame(udpipe::udpipe_annotate(ud_model, x = x)) %>%
+  x <- as.data.frame(udpipe::udpipe_annotate(ud_model, x = unlist(x))) %>%
     dplyr::select(
       document = doc_id,
       paragraph = paragraph_id,
