@@ -13,7 +13,7 @@ text_compare <- function(x,y){
   inBoth <- NULL
   
   x <- unlist(strsplit(x, split = " "))
-  y <- unlist(strsplit(x, split = " "))
+  y <- unlist(strsplit(y, split = " "))
   
   overlap <- tibble::tibble(
     in_source = length(x),
