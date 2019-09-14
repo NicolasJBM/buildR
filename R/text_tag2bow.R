@@ -11,7 +11,7 @@
 #' @importFrom stringr str_replace
 #' @export
 
-text_anno2bow <- function(x,
+text_tag2bow <- function(x,
                           base = "lemma",
                           keep = c("NOUN", "PROPN", "ADJ", "VERB", "ADV")) {
   

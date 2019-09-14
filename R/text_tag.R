@@ -8,7 +8,7 @@
 #' @importFrom udpipe udpipe_annotate
 #' @export
 
-text_annotate <- function(x, model){
+text_tag <- function(x, model){
   
   doc_id <- NULL
   paragraph_id <- NULL
