@@ -12,6 +12,7 @@
 #' @importFrom utils txtProgressBar
 #' @importFrom utils setTxtProgressBar
 #' @importFrom purrr pmap
+#' @importFrom tidyr unnest
 #' @export
 
 
@@ -31,11 +32,13 @@ boostr <- function(x, FUN, intovar, threads, ...){
     purrr::pmap(x[i,], FUN, ...)
   }
   
-    close(pb)
+  close(pb)
   snow::stopCluster(cl = cl)
   
   x <- x[,setdiff(names(x), intovar)]
   names(x) <- gsub("intovar", intovar, names(x))
+  
+  x <- tidyr::unnest(x)
   
   print(Sys.time() - t1)
   
