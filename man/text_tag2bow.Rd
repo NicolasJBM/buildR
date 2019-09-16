@@ -8,7 +8,7 @@ text_tag2bow(x, base = "lemma", keep = c("NOUN", "PROPN", "ADJ",
   "VERB", "ADV"))
 }
 \arguments{
-\item{x}{tibble. Output of the function text_annotate.}
+\item{x}{tibble. Output of the function text_tag, nest per document (or unit of analysis).}
 
 \item{base}{character string. whether a bag of "word"s or a bag of "lemma"s should be produced.}
 

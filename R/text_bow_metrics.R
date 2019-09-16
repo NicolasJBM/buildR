@@ -15,7 +15,7 @@
 #' @importFrom stats median
 #' @export
 
-text_word_metrics <- function(x,
+text_bow_metrics <- function(x,
                               source = "source",
                               term = "term",
                               count = "count") {
