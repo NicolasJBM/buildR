@@ -2,6 +2,7 @@
 #' @param dtm dtm object.
 #' @param topic_nbr Numeric vector
 #' @param prevalence Formula
+#' @param content Formula
 #' @param init.type Character.
 #' @param seed_nbr Numeric vector
 #' @param keywords Tibble.
@@ -42,7 +43,8 @@
 text_eval_stm <- function(
   dtm = NA,
   topic_nbr = c(0),
-  prevalence = NA,
+  prevalence = NULL,
+  content = NULL,
   init.type = "Spectral",
   seed_nbr = 1,
   keywords = NA,
@@ -86,15 +88,17 @@ text_eval_stm <- function(
       model = purrr::map2(
         topic_nbr,
         seed,
-        function(x, y, z, v, w) stm::stm(
+        function(x, y, z, u, v, w) stm::stm(
           z,
           K = x,
-          prevalence = v,
+          prevalence = u,
+          content = v,
           init.type = w,
           seed = y,
           verbose = FALSE),
         z = dtm,
-        v = prevalence,
+        u = prevalence,
+        v = content,
         w = init.type
         )
       ) %>%
