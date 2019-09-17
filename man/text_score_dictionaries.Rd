@@ -4,17 +4,19 @@
 \alias{text_score_dictionaries}
 \title{Count the occurrences of words associated with a dictionary.}
 \usage{
-text_score_dictionaries(x, dictionary, category = NULL,
-  type = "vector")
+text_score_dictionaries(x, type = "vector", dictionary,
+  category = NULL, pattern = NULL)
 }
 \arguments{
-\item{x}{String or character vector. Conte to be scored.}
+\item{x}{String or character vector. Content to be scored.}
+
+\item{type}{Character. Whether x is a "string" (in which case it will be split) or a "vector"}
 
 \item{dictionary}{Tibble. Categorizations of words.}
 
 \item{category}{Character. Name of the grouping variable in the dictionary.}
 
-\item{type}{Character. Whether x is a "string" (in which case it will be split) or a "vector"}
+\item{pattern}{Character. Name of the pattern variable in the dictionary.}
 }
 \value{
 A tibble with the count of words, for each category and in total, forht the document.

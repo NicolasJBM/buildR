@@ -1,8 +1,9 @@
 #' Count the occurrences of words associated with a dictionary.
-#' @param x          String or character vector. Conte to be scored.
+#' @param x          String or character vector. Content to be scored.
+#' @param type       Character. Whether x is a "string" (in which case it will be split) or a "vector"
 #' @param dictionary Tibble. Categorizations of words.
 #' @param category   Character. Name of the grouping variable in the dictionary.
-#' @param type       Character. Whether x is a "string" (in which case it will be split) or a "vector"
+#' @param pattern    Character. Name of the pattern variable in the dictionary.
 #' @return A tibble with the count of words, for each category and in total, forht the document.
 #' @importFrom dplyr %>%
 #' @importFrom dplyr select
@@ -17,16 +18,20 @@
 #' @export
 
 
-text_score_dictionaries <- function(x, dictionary, category = NULL, type = "vector"){
+text_score_dictionaries <- function(x,
+                                    type = "vector",
+                                    dictionary,
+                                    category = NULL,
+                                    pattern = NULL){
   
   group <- NULL
-  words <- NULL
+  word <- NULL
   score <- NULL
   
   if (type == "string") x <- unlist(strsplit(tolower(x), split = " ")) else x <- tolower(x)
   
   y <- dictionary %>%
-    dplyr::rename(group = category) %>%
+    dplyr::rename(group = category, word = pattern) %>%
     dplyr::group_by(group) %>%
     dplyr::summarise(word = paste(word, collapse = "|")) %>%
     dplyr::mutate(
