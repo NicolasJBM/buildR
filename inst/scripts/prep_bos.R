@@ -58,3 +58,8 @@ bos_toascii <- mutate(bos_toascii, mapL = as.character(mapL), mapA = as.characte
 
 
 save(bos_toascii, file = "data/bos_toascii.RData")
+
+
+
+bos_sentiments <- read.csv("inst/scripts/bos_sentiments.csv")
+save(bos_sentiments, file = "data/bos_sentiments.RData")
