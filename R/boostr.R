@@ -36,9 +36,8 @@ boostr <- function(x, FUN, intovar, threads, ...){
   snow::stopCluster(cl = cl)
   
   x <- x[,setdiff(names(x), intovar)]
+  x <- tidyr::unnest(x, cols = intovar)
   names(x) <- gsub("intovar", intovar, names(x))
-  
-  x <- tidyr::unnest(x)
   
   print(Sys.time() - t1)
   
