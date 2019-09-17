@@ -1,4 +1,4 @@
-#' Sentiments
+#' Dictionaries for lexical analyses
 #'
 #' A tibble with patterns classified in various categories.
 #' 
@@ -6,6 +6,6 @@
 #' @source \url{http://www.lexiconista.com/datasets/lemmatization/}
 #' @docType data
 #' @keywords dictionary, LIWC
-#' @name bos_sentiments
-#' @usage data("bos_sentiments")
-"bos_sentiments"
+#' @name bos_dictionaries
+#' @usage data("bos_dictionaries")
+"bos_dictionaries"

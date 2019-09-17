@@ -61,5 +61,6 @@ save(bos_toascii, file = "data/bos_toascii.RData")
 
 
 
-bos_sentiments <- read.csv("inst/scripts/bos_sentiments.csv")
-save(bos_sentiments, file = "data/bos_sentiments.RData")
+bos_dictionaries <- read.csv("inst/scripts/dictionaries.csv")
+save(bos_dictionaries, file = "data/bos_dictionaries.RData")
+
