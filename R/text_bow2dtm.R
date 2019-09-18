@@ -43,7 +43,7 @@ text_bow2dtm <- function(x,
     dplyr::mutate(maxtfidf = purrr::map_dbl(data, function(x) max(x$tf_idf))) %>%
     dplyr::top_n(nbterm, maxtfidf) %>%
     dplyr::select(-maxtfidf) %>%
-    tidyr::unnest(cols = c(data))
+    tidyr::unnest(data)
   
   doc <- unique(dplyr::select(dtm, document = document, word_count = src_word_count))
   if (!is.null(docvar)){

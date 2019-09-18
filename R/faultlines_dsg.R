@@ -68,7 +68,7 @@ faultlines_dsg <- function(x, subgroup){
         DSG_CGA = NA
       ) %>%
       dplyr::select(-data) %>%
-      unnest(cols = c(DSG_IA_0)) %>%
+      unnest(DSG_IA_0) %>%
       mutate(DSG_IA = DSG_IA_0) %>%
       mutate(DSG = NA)
   } else if (nbrSGP0 == 0){
@@ -79,7 +79,7 @@ faultlines_dsg <- function(x, subgroup){
         DSG_CGA = NA
       ) %>%
       dplyr::select(-data) %>%
-      unnest(cols = c(DSG_IA_1)) %>%
+      unnest(DSG_IA_1) %>%
       mutate(DSG_IA = DSG_IA_1) %>%
       mutate(DSG = NA)
   } else{
@@ -100,7 +100,7 @@ faultlines_dsg <- function(x, subgroup){
         DSG_CGA = map(DSG_CGA, comp_proxim, type = "CGA")
       ) %>%
       dplyr::select(-data) %>%
-      unnest(cols = c(DSG_IA_1, DSG_IA_0, DSG_CGA)) %>%
+      unnest(DSG_IA_1, DSG_IA_0, DSG_CGA) %>%
       mutate(DSG_IA = DSG_IA_0/2 + DSG_IA_1/2) %>%
       mutate(DSG = DSG_IA * (1-DSG_CGA))
   }

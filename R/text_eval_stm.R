@@ -182,7 +182,7 @@ text_eval_stm <- function(
     
     overlap <- overlap %>%
       dplyr::select(-model, -keywords) %>%
-      tidyr::unnest(cols = c(overlap))
+      tidyr::unnest(overlap)
     
     tm_quality <- tm_quality %>%
       dplyr::select(-model) %>%

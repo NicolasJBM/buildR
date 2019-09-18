@@ -37,7 +37,7 @@ faultlines_fls <- function(x, subgroup){
     group_by(subgroup) %>%
     nest() %>%
     mutate(data = map(data, fls_ia)) %>%
-    unnest(cols = c(data)) %>%
+    unnest(data) %>%
     mutate(subgroup = paste("FLS_IA", subgroup, sep="_")) %>%
     spread(subgroup, data)
   

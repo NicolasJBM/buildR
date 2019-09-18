@@ -19,6 +19,7 @@
 boostr <- function(x, FUN, intovar, threads, ...){
   
   i <- NULL
+  result <- NULL
   
   cl <-  snow::makeSOCKcluster(threads)
   doSNOW::registerDoSNOW(cl)
@@ -28,7 +29,7 @@ boostr <- function(x, FUN, intovar, threads, ...){
   
   t1 <- Sys.time()
   
-  x$intovar <- foreach(i = 1:nrow(x), .options.snow=opts) %dopar% {
+  x$result <- foreach(i = 1:nrow(x), .options.snow=opts) %dopar% {
     purrr::pmap(x[i,], FUN, ...)
   }
   
@@ -36,8 +37,10 @@ boostr <- function(x, FUN, intovar, threads, ...){
   snow::stopCluster(cl = cl)
   
   x <- x[,setdiff(names(x), intovar)]
-  x <- tidyr::unnest(x, cols = intovar)
-  names(x) <- gsub("intovar", intovar, names(x))
+  x <- tidyr::unnest(x, result)
+  names(x) <- gsub("result", intovar, names(x))
+  
+  
   
   print(Sys.time() - t1)
   

@@ -95,7 +95,7 @@ make_edgelist <- function(x, nodes = NULL){
         group_by(edges) %>%
         nest() %>%
         mutate(data = map(data, make_cooc)) %>%
-        unnest(cols = c(data)) %>%
+        unnest(data) %>%
         ungroup() %>%
         select(-edges) %>%
         group_by(from, to) %>%
