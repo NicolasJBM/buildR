@@ -1,6 +1,7 @@
 #' Apply an udpipe model for part-of-speech tagging.
-#' @param x  character. String to be parsed.
-#' @param model character. path from the working directory to the downloaded udpipe model.
+#' @param document character. ID of the document.
+#' @param text     character. String to be parsed.
+#' @param model    character. path from the working directory to the downloaded udpipe model.
 #' @return A dataframe where each relationship between word is an observation
 #' @importFrom dplyr %>%
 #' @importFrom dplyr left_join
@@ -12,7 +13,7 @@
 #' @export
 
 
-text_parse <- function(x, model){
+text_parsedep <- function(document, text, model){
   
   doc_id <- NULL
   paragraph_id <- NULL
@@ -32,7 +33,8 @@ text_parse <- function(x, model){
   src_pos <- NULL
   
   ud_model <- udpipe::udpipe_load_model(model)
-  y <- udpipe::udpipe(x, ud_model, parallel.cores = 1) %>%
+  y <- tibble(doc_id = document, text = text) %>%
+    udpipe::udpipe(ud_model, parallel.cores = 1) %>%
     tidyr::unite(src_token, doc_id, paragraph_id, sentence_id, token_id, sep = "_", remove = FALSE) %>%
     tidyr::unite(tgt_token, doc_id, paragraph_id, sentence_id, head_token_id, sep = "_", remove = TRUE) %>%
     dplyr::select(
