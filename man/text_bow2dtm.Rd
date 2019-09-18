@@ -4,21 +4,23 @@
 \alias{text_bow2dtm}
 \title{Transform the bags of words into a document to term matrix/}
 \usage{
-text_bow2dtm(x, document = "document", min_term_count = 0,
-  min_term_src_count = 0, nbterm = 1000, docvar = NULL)
+text_bow2dtm(x, min_term = 0, max_term = 0, min_src = 0,
+  max_src = 0, nbterm = 1000, docvar = NULL)
 }
 \arguments{
-\item{x}{tibble. Output of the function text_bow_metrics.}
+\item{x}{tibble. Output of the function text_bow_metrics. Document ids must be in a variable called "document".}
 
-\item{document}{character. name of the variable identifying documents.}
+\item{min_term}{Integer. Remove terms appearing less than this number of times.}
 
-\item{min_term_count}{Integer. Remove terms appearing less than this number of times.}
+\item{max_term}{Integer. Remove terms appearing more than this number of times.}
 
-\item{min_term_src_count}{Integer, Remove terms appearing in less than this number of documents.}
+\item{min_src}{Integer, Remove terms appearing in less than this number of documents.}
+
+\item{max_src}{Integer, Remove terms appearing in more than this number of documents.}
 
 \item{nbterm}{Integer. Select this number of terms based on tf idf.}
 
-\item{docvar}{Additional information about documents to be appended to the docvar of the dtm.}
+\item{docvar}{Additional information about documents to be appended to the docvar of the dtm. Document ids must be in a variable called "document".}
 }
 \value{
 A document to term matrix.
