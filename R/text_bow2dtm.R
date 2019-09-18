@@ -10,6 +10,7 @@
 #' @importFrom dplyr select
 #' @importFrom dplyr filter
 #' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr mutate
 #' @importFrom dplyr top_n
 #' @importFrom dplyr rename
@@ -22,9 +23,9 @@
 
 text_bow2dtm <- function(x,
                          min_term = 0,
-                         max_term = 0,
+                         max_term = Inf,
                          min_src = 0,
-                         max_src = 0,
+                         max_src = Inf,
                          nbterm = 1000,
                          docvar = NULL){
   
@@ -47,6 +48,7 @@ text_bow2dtm <- function(x,
     dplyr::group_by(term) %>%
     tidyr::nest() %>%
     dplyr::mutate(maxtfidf = purrr::map_dbl(data, function(x) max(x$tf_idf))) %>%
+    dplyr::ungroup() %>%
     dplyr::top_n(nbterm, maxtfidf) %>%
     dplyr::select(-maxtfidf) %>%
     tidyr::unnest(data)
@@ -55,8 +57,6 @@ text_bow2dtm <- function(x,
   if (!is.null(docvar)){
     doc <- dplyr::left_join(doc, docvar, by = "document")
   }
-  
-  rm(document)
   
   dtm <- dtm %>%
     dplyr::select(document, term, count) %>%
