@@ -25,7 +25,7 @@
 #' @export
 
 
-make_edgelist <- function(x, nodes = NULL){
+tble_attri2edge <- function(x, nodes = NULL){
   
   # Check entries
   stopifnot(!is.null(nodes))

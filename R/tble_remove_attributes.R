@@ -4,7 +4,7 @@
 #' @importFrom tibble as_tibble
 #' @export
 
-remove_attributes <- function(x){
+tble_remove_attributes <- function(x){
   x[] <- lapply(x, function(x) { attributes(x) <- NULL; x })
   x <- tibble::as_tibble(x)
   return(x)

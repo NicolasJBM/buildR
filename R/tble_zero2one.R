@@ -4,7 +4,7 @@
 #' @importFrom dplyr mutate_if
 #' @export
 
-stat_zero2one <- function(x) {
+tble_zero2one <- function(x) {
   x %>% mutate_if(is.numeric, scale01)
 }
 

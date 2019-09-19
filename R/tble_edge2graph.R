@@ -12,7 +12,7 @@
 #' @export
 
 
-make_tidygraph <- function(x, nodes_properties = NULL){
+tble_edge2graph <- function(x, nodes_properties = NULL){
   
   # check entries
   stopifnot(

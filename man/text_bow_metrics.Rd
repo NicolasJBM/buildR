@@ -4,20 +4,20 @@
 \alias{text_bow_metrics}
 \title{Compute basic metrics for a bag of words.}
 \usage{
-text_bow_metrics(x, source = "source", term = "term",
+text_bow_metrics(bow, document = "document", term = "term",
   count = "count")
 }
 \arguments{
-\item{x}{tibble. Bag of words produced with text_anno2bow}
+\item{bow}{tibble. Bag of words produced with text_semrel2bow}
 
-\item{source}{character string. Name of the variable indicating the document id.}
+\item{document}{character string. Name of the variable indicating the document id.}
 
 \item{term}{character string. Name of the variable indicating the term.}
 
 \item{count}{character string. Name of the variable indicating the frequence.}
 }
 \value{
-A tibble 9 variables: source, term, count, src_word_count (number of words in the source), term_count (frequency of the term), term_source_count (number of sources in which the term appears), tf, idf, tf_idf.
+A tibble 9 variables: document, term, count, doc_word_count (number of words in the document), term_count (frequency of the term), term_document_count (number of documents in which the term appears), tf, idf, tf_idf.
 }
 \description{
 Compute basic metrics for a bag of words.

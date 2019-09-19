@@ -2,16 +2,16 @@
 % Please edit documentation in R/text_clean.R
 \name{text_clean}
 \alias{text_clean}
-\title{Simplify and clean a text.}
+\title{Remove html tags, remove double spaces, convert to ASCII.}
 \usage{
-text_clean(x)
+text_clean(text)
 }
 \arguments{
-\item{x}{character. String to be cleaned.}
+\item{text}{character. String to be cleaned.}
 }
 \value{
 A clean string.
 }
 \description{
-Simplify and clean a text.
+Remove html tags, remove double spaces, convert to ASCII.
 }

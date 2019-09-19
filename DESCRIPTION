@@ -44,4 +44,6 @@ Imports:
     networkDynamic,
     foreach,
     snow,
-    doSNOW
+    doSNOW,
+    koRpus,
+    koRpus.lang.en

@@ -1,5 +1,5 @@
-#' Simplify and clean a text.
-#' @param x  character. String to be cleaned.
+#' Remove html tags, remove double spaces, convert to ASCII.
+#' @param text  character. String to be cleaned.
 #' @return A clean string.
 #' @importFrom dplyr %>%
 #' @importFrom stringr str_replace_all
@@ -9,33 +9,37 @@
 #' @importFrom textclean replace_non_ascii
 #' @export
 
-text_clean <- function(x){
+text_clean <- function(text){
   
-  format_ascii <- function(x){
+  stopifnot(
+    is.character(text),
+    length(text) == 1
+  )
+  
+  format_ascii <- function(text){
     
-    x <- x %>%
+    text <- text %>%
       stringr::str_replace_all("<.*?>", " ") %>% # remove html tags
       stringr::str_replace_all("  ", " ") %>% # replace double spaces by single spaces
       stringr::str_split(" ") %>%
       unlist()
     
-    split = strsplit(x,split='')
+    split = strsplit(text, split='')
     m = lapply(split,match, buildR::bos_toascii$mapL)
-    mapply(function(split,m) paste(ifelse(is.na(m),split,buildR::bos_toascii$mapA[m]),collapse='') , split, m)
+    mapply(function(split,m) paste(ifelse(is.na(m), split, buildR::bos_toascii$mapA[m]), collapse='') , split, m)
     
-    x <- x %>%
+    text <- text %>%
       stringi::stri_trans_general(id = "ascii") %>%
       textclean::replace_non_ascii(replacement = "", remove.nonconverted = TRUE)
     
-    x <- paste(x, collapse = " ")
+    text <- paste(text, collapse = " ")
     
-    trimws(x)
+    trimws(text)
   }
   
-  x %>%
+  text %>%
     as.character() %>%
     format_ascii() %>%
-    stringr::str_replace_all(pattern = "-", replacement = " ") %>%
     tm::stripWhitespace() %>%
     trimws()
 }

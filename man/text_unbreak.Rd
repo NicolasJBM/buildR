@@ -2,16 +2,16 @@
 % Please edit documentation in R/text_unbreak.R
 \name{text_unbreak}
 \alias{text_unbreak}
-\title{Transform the documents stored in a dataframe in a bag of words.}
+\title{Identify linebreaks which do not seem to match an end of paragraph and recompose the paragraph.}
 \usage{
-text_unbreak(x)
+text_unbreak(document)
 }
 \arguments{
-\item{x}{character vector in which paragraphs are over multiple lines.}
+\item{document}{Character vector. A vector of lines of text to be recomposed into paragraphs.}
 }
 \value{
-A character vector in which paragraphs (ending with . and with an empty line after) are recomposed.
+A character vector in which paragraphs (ending with "." and with an empty line after) are recomposed.
 }
 \description{
-Transform the documents stored in a dataframe in a bag of words.
+Identify linebreaks which do not seem to match an end of paragraph and recompose the paragraph.
 }

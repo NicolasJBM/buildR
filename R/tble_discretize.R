@@ -16,7 +16,7 @@
 #' @export
 
 
-stat_discretize <- function(x, ncat = 2, method = "km"){
+tble_discretize <- function(x, ncat = 2, method = "km"){
   if (method == "km"){
     x <- mutate_if(x, is.numeric, kmeans_split, ncat = ncat)
   } else {
@@ -46,7 +46,6 @@ kmeans_split <- function(x, ncat) {
   
   return(newx)
 }
-
 
 
 quantile_split <- function(x, ncat) {

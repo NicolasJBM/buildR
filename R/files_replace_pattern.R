@@ -9,7 +9,7 @@
 #' @export
 
 
-replace_in_files <- function(path,
+files_replace_pattern <- function(path,
                              pattern,
                              replacement){
   
