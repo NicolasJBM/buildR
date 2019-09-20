@@ -4,14 +4,14 @@
 \alias{text_eval_stm}
 \title{Return various metrics to evaluate topic model performance for different topic numbers.}
 \usage{
-text_eval_stm(dtm = NA, topic_nbr = c(0), prevalence = NULL,
-  content = NULL, init.type = "Spectral", seed_nbr = 1,
-  keywords = NA, topic_per_doc = 5, terms_per_topic = 5)
+text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
+  content = NULL, init.type = "Spectral", seed = 1,
+  keywords = NULL, topic_per_doc = 5, terms_per_topic = 5)
 }
 \arguments{
-\item{dtm}{dtm object.}
+\item{dtm}{dtm.}
 
-\item{topic_nbr}{Numeric vector}
+\item{topic_nbr}{Numeric.}
 
 \item{prevalence}{Formula}
 
@@ -19,7 +19,7 @@ text_eval_stm(dtm = NA, topic_nbr = c(0), prevalence = NULL,
 
 \item{init.type}{Character.}
 
-\item{seed_nbr}{Numeric vector}
+\item{seed}{Numeric}
 
 \item{keywords}{Tibble.}
 
