@@ -25,7 +25,7 @@
 #' @export
 
 
-tble_attri2edge <- function(x, nodes = NULL){
+net_attri2edge <- function(x, nodes = NULL){
   
   # Check entries
   stopifnot(!is.null(nodes))

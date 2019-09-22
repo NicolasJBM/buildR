@@ -12,7 +12,7 @@
 #' @export
 
 
-tble_edge2graph <- function(x, nodes_properties = NULL){
+net_edge2graph <- function(x, nodes_properties = NULL){
   
   # check entries
   stopifnot(
