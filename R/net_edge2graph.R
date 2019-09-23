@@ -7,6 +7,7 @@
 #' @importFrom tidygraph activate
 #' @importFrom dplyr select
 #' @importFrom dplyr left_join
+#' @importFrom dplyr full_join
 #' @importFrom dplyr rename
 #' @importFrom tibble rownames_to_column
 #' @export
@@ -58,7 +59,7 @@ net_edge2graph <- function(x, nodes_properties = NULL){
   if (!is.null(nodes_properties)){
     graph <-graph %>%
       activate(nodes) %>%
-      left_join(nodes_properties, by = "name")
+      full_join(nodes_properties, by = "name")
   }
   
   if (length(x) > 2){

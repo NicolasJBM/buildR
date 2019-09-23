@@ -7,7 +7,7 @@
 net_aggredge(edgelist, mode = "rolling", step = 1, range = 1)
 }
 \arguments{
-\item{edgelist}{Tibble. Edgelist with gour variables: year, from, to, weight}
+\item{edgelist}{Tibble. Edgelist with four variables: year, from, to, weight}
 
 \item{mode}{Character. Indicate whether edges should be aggregrated as "full", "cumulative", or "rolling".}
 

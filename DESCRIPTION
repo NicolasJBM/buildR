@@ -46,4 +46,5 @@ Imports:
     snow,
     doSNOW,
     koRpus,
-    koRpus.lang.en
+    koRpus.lang.en,
+    intergraph

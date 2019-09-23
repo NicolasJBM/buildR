@@ -1,5 +1,5 @@
 #' Aggregate edges according to speciffications.
-#' @param edgelist Tibble. Edgelist with gour variables: year, from, to, weight
+#' @param edgelist Tibble. Edgelist with four variables: year, from, to, weight
 #' @param mode    Character. Indicate whether edges should be aggregrated as "full", "cumulative", or "rolling".
 #' @param step    Numeric. Size of the increments in years.
 #' @param range   Numeric. In the "rolling" mode, this refers to the size of the window.
@@ -14,6 +14,8 @@
 #' @importFrom dplyr mutate
 #' @importFrom dplyr %>%
 #' @importFrom tidyr unnest
+#' @importFrom tidyr spread
+#' @importFrom tidyr gather
 #' @export
 
 
@@ -59,8 +61,14 @@ net_aggredge <- function(edgelist, mode = "rolling", step = 1, range = 1){
       dplyr::ungroup()
   }
   
+  fulledgelist <- edgelist %>%
+    tidyr::spread(to, weight, fill = 0) %>%
+    tidyr::gather(to, weight, -year, -from) %>%
+    tidyr::spread(from, weight, fill = 0) %>%
+    tidyr::gather(from, weight, -year, -to)
+  
   aggregation <- aggregation %>%
-    dplyr::mutate(edges = purrr::map2(start, end, aggregate_edges, z = edgelist)) %>%
+    dplyr::mutate(edges = purrr::map2(start, end, aggregate_edges, z = fulledgelist)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
   
