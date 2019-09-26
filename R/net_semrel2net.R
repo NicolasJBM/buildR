@@ -47,6 +47,7 @@ net_semrel2net <- function(semrel,
   tgt_word <- NULL
   tgt_lemma <- NULL
   name <- NULL
+  weight <- NULL
   
   if (basis == "word") src <- "src_word" else src <- "src_lemma"
   if (basis == "word") tgt <- "tgt_word" else tgt <- "tgt_lemma"
