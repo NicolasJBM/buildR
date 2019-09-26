@@ -5,6 +5,8 @@
 #' @importFrom stringr str_replace_all
 #' @importFrom tm stripWhitespace
 #' @importFrom stringr str_split
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr fixed
 #' @importFrom stringi stri_trans_general
 #' @importFrom textclean replace_non_ascii
 #' @export
@@ -17,6 +19,21 @@ text_clean <- function(text){
   )
   
   text %>%
+    stringr::str_replace_all("-\\s([A-Za-z])", "-\\1") %>%
+    stringr::str_replace_all("\\s-([A-Za-z])", "-\\1") %>%
+    stringr::str_replace_all("\\.([A-Za-z])", ". \\1") %>%
+    stringr::str_replace_all("\\;([A-Za-z])", "; \\1") %>%
+    stringr::str_replace_all("\\,([A-Za-z])", ", \\1") %>%
+    stringr::str_replace_all("\\:([A-Za-z])", ": \\1") %>%
+    stringr::str_replace_all("\\!([A-Za-z])", "! \\1") %>%
+    stringr::str_replace_all("\\?([A-Za-z])", "? \\1") %>%
+    stringr::str_replace_all(stringr::fixed(" ."), stringr::fixed(".")) %>%
+    stringr::str_replace_all(stringr::fixed(" ;"), stringr::fixed(";")) %>%
+    stringr::str_replace_all(stringr::fixed(" ,"), stringr::fixed(",")) %>%
+    stringr::str_replace_all(stringr::fixed(" :"), stringr::fixed(":")) %>%
+    stringr::str_replace_all(stringr::fixed(" !"), stringr::fixed("!")) %>%
+    stringr::str_replace_all(stringr::fixed(" ?"), stringr::fixed("?")) %>%
+    stringr::str_replace_all(stringr::fixed("a cent "), stringr::fixed(" ")) %>%
     as.character() %>%
     buildR::bos_format_ascii() %>%
     tm::stripWhitespace() %>%

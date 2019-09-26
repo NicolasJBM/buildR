@@ -9,6 +9,7 @@
 #' @importFrom tidyr unite
 #' @importFrom udpipe udpipe_load_model
 #' @importFrom udpipe udpipe
+#' @importFrom tm stemDocument
 #' @export
 
 
@@ -47,10 +48,7 @@ text_txt2semrel <- function(text, model){
     tidyr::unite(tgt_token, doc_id, paragraph_id, sentence_id, head_token_id, sep = "_", remove = TRUE) %>%
     dplyr::mutate(stem = tm::stemDocument(lemma))
   
-  dictionary <- y$lemma
-  
   y <- y %>%
-    dplyr::mutate(stem = tm::stemCompletion(stem, dictionary = dictionary, type = "prevalent")) %>%
     dplyr::select(
       src_token,
       src_word = token,
