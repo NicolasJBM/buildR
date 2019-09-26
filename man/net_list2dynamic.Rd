@@ -5,7 +5,9 @@
 \title{Add Jaccard coefficients to the edges of a tidygraph.}
 \usage{
 net_list2dynamic(graphlist, periodvar = "period", graphvar = "graph",
-  node_weight = NULL, node_com = NULL, edge_weight = NULL)
+  node_weight = NULL, node_com = NULL, edge_weight = NULL,
+  vscale = 0.001, escale = 0.001, colors = c("red", "blue", "green",
+  "orange", "purple", "darkgreen", "darkred"))
 }
 \arguments{
 \item{graphlist}{Tibble. One column must contain the "period" and another should contain the "graph"}
@@ -19,6 +21,12 @@ net_list2dynamic(graphlist, periodvar = "period", graphvar = "graph",
 \item{node_com}{Character. Name of the variable containing the community of the nodes in each graph.}
 
 \item{edge_weight}{Character. Name of the variable containing  the weights of the edges in each graph.}
+
+\item{vscale}{Numeric. Scaling factor for vertices.}
+
+\item{escale}{Numeric. Scaling factor for edges.}
+
+\item{colors}{Character vector. Colors of the communities.}
 }
 \value{
 A D3 movie showing the evolution of the network.

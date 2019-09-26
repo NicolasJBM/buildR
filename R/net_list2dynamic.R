@@ -5,6 +5,9 @@
 #' @param node_weight Character. Name of the variable containing the weights of the nodes in each graph.
 #' @param node_com    Character. Name of the variable containing the community of the nodes in each graph. 
 #' @param edge_weight Character. Name of the variable containing  the weights of the edges in each graph.
+#' @param vscale      Numeric. Scaling factor for vertices.
+#' @param escale      Numeric. Scaling factor for edges.
+#' @param colors      Character vector. Colors of the communities.
 #' @return A D3 movie showing the evolution of the network.
 #' @importFrom tidygraph as.igraph
 #' @importFrom tidygraph activate
@@ -17,6 +20,8 @@
 #' @importFrom ndtv compute.animation
 #' @importFrom ndtv render.d3movie
 #' @importFrom network %v%
+#' @importFrom network %e%
+#' @importFrom grDevices palette
 #' @export
 
 
@@ -25,7 +30,10 @@ net_list2dynamic <- function(graphlist,
                              graphvar = "graph",
                              node_weight = NULL,
                              node_com = NULL,
-                             edge_weight = NULL){
+                             edge_weight = NULL,
+                             vscale = 0.001,
+                             escale = 0.001,
+                             colors = c("red","blue","green","orange","purple","darkgreen","darkred")){
   
   stopifnot(
     periodvar %in% names(graphlist),
@@ -80,7 +88,13 @@ net_list2dynamic <- function(graphlist,
   ndtv::compute.animation( 
     movie, 
     animation.mode = "kamadakawai", 
-    slice.par=list(start=0, end=(length(timenet)-1), interval=1, aggregate.dur=1, rule='any'), 
+    slice.par=list(
+      start=0,
+      end=(length(timenet)-1),
+      interval=1,
+      aggregate.dur=1,
+      rule='any'
+    ), 
     verbose = FALSE)  
   
   chart <- ndtv::render.d3movie(movie,
@@ -90,10 +104,10 @@ net_list2dynamic <- function(graphlist,
                                 label = "label",
                                 bg="#ffffff",  
                                 vertex.border="#333333",  
-                                vertex.cex = (timenet[[length(timenet)]] %v% "weight")/1000,    
-                                vertex.col = as.integer(timenet[[length(timenet)]] %v% "community"), 
+                                vertex.cex = (timenet[[length(timenet)]] %v% "weight")*vscale,    
+                                vertex.col = colors[as.integer(as.factor(timenet[[length(timenet)]] %v% "community"))], 
                                 label.cex = 0.5,
-                                edge.lwd = 1,   
+                                edge.lwd = (timenet[[length(timenet)]] %e% "weight")*escale,   
                                 edge.col = '#55555599',  
                                 launchBrowser=TRUE,  
                                 render.par=list(tween.frames = 30, show.time = F),  
