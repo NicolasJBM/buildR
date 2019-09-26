@@ -20,7 +20,7 @@
 #' @importFrom stats na.omit
 #' @export
 
-text_semrel2net <- function(semrel,
+net_semrel2net <- function(semrel,
                             basis = "lemma",
                             keep_pos = c("NOUN", "PROPN", "ADJ", "VERB", "ADV"),
                             multiplex = FALSE,
@@ -58,17 +58,17 @@ text_semrel2net <- function(semrel,
     edges <- edges %>%
       dplyr::select(src = src, src_pos, tgt = tgt, tgt_pos, rel = relation) %>%
       dplyr::group_by(src, src_pos, tgt, tgt_pos, rel) %>%
-      dplyr::summarise(count = dplyr::n()) %>%
+      dplyr::summarise(weight = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::filter(count >= min_count) %>%
+      dplyr::filter(weight >= min_count) %>%
       na.omit()
   } else {
     edges <- edges %>%
       dplyr::select(src = src, tgt = tgt) %>%
       dplyr::group_by(src, tgt) %>%
-      dplyr::summarise(count = dplyr::n()) %>%
+      dplyr::summarise(weight = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::filter(count >= min_count) %>%
+      dplyr::filter(weight >= min_count) %>%
       na.omit()
   }
   
@@ -79,7 +79,7 @@ text_semrel2net <- function(semrel,
     unique() %>%
     dplyr::select(name = basis) %>%
     dplyr::group_by(name) %>%
-    dplyr::summarise(count = dplyr::n()) %>%
+    dplyr::summarise(occurrences = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::filter(name %in% unique(union(edges$src, edges$tgt)))
   
