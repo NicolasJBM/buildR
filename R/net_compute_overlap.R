@@ -16,12 +16,21 @@ net_compute_overlap <- function(graph){
   from <- NULL
   to <- NULL
   weight <- NULL
+  name <- NULL
+  occurrences <- NULL
   
-  occ_from <- graph %>%
-    tidygraph::activate("edges") %>%
-    as.data.frame() %>%
-    dplyr::filter(from == to) %>%
-    dplyr::select(from, occ_from = weight)
+  nodes <- as.data.frame(tidygraph::activate(graph, "nodes"))
+  
+  if ("occurrences" %in% names(nodes)){
+    occ_from <- nodes %>%
+      select(from = name, occ_from = occurrences)
+  } else {
+    occ_from <- graph %>%
+      tidygraph::activate("edges") %>%
+      as.data.frame() %>%
+      dplyr::filter(from == to) %>%
+      dplyr::select(from, occ_from = weight)
+  }
   
   occ_to <- occ_from %>%
     dplyr::rename(to = from, occ_to = occ_from)
@@ -36,6 +45,8 @@ net_compute_overlap <- function(graph){
       to_if_from = weight / occ_from
     ) %>%
     dplyr::select(-occ_from, -occ_to) %>%
+    na.omit() %>%
     tidygraph::activate("nodes") %>%
-    dplyr::mutate(occurrences = arrange(occ_from, from)$occ_from)
+    dplyr::mutate(occurrences = arrange(occ_from, from)$occ_from) %>%
+    na.omit()
 }

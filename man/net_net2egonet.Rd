@@ -4,12 +4,14 @@
 \alias{net_net2egonet}
 \title{Make an tidygraph from an edgelist and a set of nodes attributes.}
 \usage{
-net_net2egonet(graph, terms)
+net_net2egonet(graph, terms, separation = 2)
 }
 \arguments{
 \item{graph}{Tidygraph.}
 
 \item{terms}{Character. Regular expression to find the focal patterns.}
+
+\item{separation}{Numeric. Maximum number of edges between focal and selected nodes.}
 }
 \value{
 A tidygraph

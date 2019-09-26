@@ -21,19 +21,20 @@ text_semrel2bow <- function(semrel,
   
   stopifnot(
     tibble::is_tibble(semrel),
-    basis %in% c("word","lemma"),
+    basis %in% c("word","lemma","stem"),
     is.character(keep_pos),
     is.numeric(min_count)
   )
   
   src_word <- NULL
   src_lemma <- NULL
+  src_stem <- NULL
   src_pos <- NULL
   src_token <- NULL
   term <- NULL
   
   semrel %>%
-    dplyr::rename(word = src_word, lemma = src_lemma) %>%
+    dplyr::rename(word = src_word, lemma = src_lemma, stem = src_stem) %>%
     dplyr::filter(src_pos %in% keep_pos) %>%
     dplyr::select(src_token, term = basis) %>%
     unique() %>%

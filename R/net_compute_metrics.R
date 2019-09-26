@@ -11,6 +11,7 @@
 net_compute_metrics <- function(graph, directed = TRUE, weight_var = NULL, optimal_com = FALSE){
   
   graph <- graph %>%
+    activate("edges") %>%
     mutate(
       reciprocity = edge_is_mutual(),
       betweenness = centrality_edge_betweenness() 

@@ -11,6 +11,7 @@
 #' @importFrom dplyr group_by
 #' @importFrom dplyr ungroup
 #' @importFrom dplyr summarise
+#' @importFrom dplyr everything
 #' @importFrom dplyr n
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr left_join
@@ -21,14 +22,14 @@
 #' @export
 
 net_semrel2net <- function(semrel,
-                            basis = "lemma",
-                            keep_pos = c("NOUN", "PROPN", "ADJ", "VERB", "ADV"),
-                            multiplex = FALSE,
-                            min_count = 1){
+                           basis = "lemma",
+                           keep_pos = c("NOUN", "PROPN", "ADJ", "VERB", "ADV"),
+                           multiplex = FALSE,
+                           min_count = 1){
   
   stopifnot(
     tibble::is_tibble(semrel),
-    basis %in% c("word","lemma"),
+    basis %in% c("word","lemma","stem"),
     is.character(keep_pos),
     is.logical(multiplex),
     is.numeric(min_count)
@@ -36,6 +37,7 @@ net_semrel2net <- function(semrel,
   
   src_word <- NULL
   src_lemma <- NULL
+  src_stem <- NULL
   src_pos <- NULL
   src_token <- NULL
   term <- NULL
@@ -46,15 +48,27 @@ net_semrel2net <- function(semrel,
   tgt_token <- NULL
   tgt_word <- NULL
   tgt_lemma <- NULL
-  name <- NULL
+  tgt_stem <- NULL
+  label <- NULL
   weight <- NULL
+  name <- NULL
+  occurrences <- NULL
   
-  if (basis == "word") src <- "src_word" else src <- "src_lemma"
-  if (basis == "word") tgt <- "tgt_word" else tgt <- "tgt_lemma"
+  src <- switch (basis,
+    word = src_word,
+    lemma = src_lemma,
+    stem = src_stem
+  )
+  
+  tgt <- switch (basis,
+                 word = tgt_word,
+                 lemma = tgt_lemma,
+                 stem = tgt_stem
+  )
   
   edges <- semrel %>%
     dplyr::filter(src_pos %in% keep_pos, tgt_pos %in% keep_pos)
-    
+  
   if (multiplex){
     edges <- edges %>%
       dplyr::select(src = src, src_pos, tgt = tgt, tgt_pos, rel = relation) %>%
@@ -86,10 +100,10 @@ net_semrel2net <- function(semrel,
   
   if (multiplex){
     graph <- edges %>%
-      dplyr::select(from = src, to = tgt, src_pos, tgt_pos, rel, count)
+      dplyr::select(from = src, to = tgt, src_pos, tgt_pos, rel, weight)
   } else {
     graph <- edges %>%
-      dplyr::select(from = src, to = tgt, count)
+      dplyr::select(from = src, to = tgt, weight)
   }
   
   if (nrow(edges) > 0){
@@ -97,7 +111,9 @@ net_semrel2net <- function(semrel,
       tidygraph::as_tbl_graph() %>%
       tidygraph::activate("nodes") %>%
       dplyr::left_join(nodes, by = "name") %>%
-      dplyr::mutate(id = 1:length(name))
+      dplyr::mutate(label = name) %>%
+      dplyr::mutate(name = 1:length(label)) %>%
+      dplyr::select(name, label, occurrences, dplyr::everything())
   } else graph <- NA
   
   return(graph)
