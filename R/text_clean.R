@@ -33,6 +33,7 @@ text_clean <- function(text){
     stringr::str_replace_all(stringr::fixed(" :"), stringr::fixed(":")) %>%
     stringr::str_replace_all(stringr::fixed(" !"), stringr::fixed("!")) %>%
     stringr::str_replace_all(stringr::fixed(" ?"), stringr::fixed("?")) %>%
+    stringr::str_replace_all(stringr::fixed("a~"), stringr::fixed(" ")) %>%
     stringr::str_replace_all(stringr::fixed("a cent "), stringr::fixed(" ")) %>%
     as.character() %>%
     buildR::bos_format_ascii() %>%

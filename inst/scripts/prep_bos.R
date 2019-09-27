@@ -64,3 +64,7 @@ save(bos_toascii, file = "data/bos_toascii.RData")
 bos_dictionaries <- read.csv("inst/scripts/dictionaries.csv")
 save(bos_dictionaries, file = "data/bos_dictionaries.RData")
 
+
+bos_symbols <- "[~#\\(\\)\\\\@/%$£€&^]"
+save(bos_symbols, file = "data/bos_symbols.RData")
+

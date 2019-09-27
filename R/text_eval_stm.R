@@ -91,14 +91,17 @@ text_eval_stm <- function(
   
   if (!is.null(keywords)){
     
-    ref_topics <- tidytext::tidy(model, matrix = "gamma", document_names = rownames(dtm)) %>%
-      dplyr::group_by(document) %>%
-      dplyr::top_n(topic_per_doc, gamma) %>%
-      dplyr::ungroup()
     
     topic_terms <- tidytext::tidy(model, matrix = "beta") %>%
       dplyr::group_by(topic) %>%
       dplyr::top_n(terms_per_topic, beta) %>%
+      dplyr::ungroup()
+    
+    
+    
+    ref_topics <- tidytext::tidy(model, matrix = "gamma", document_names = rownames(dtm)) %>%
+      dplyr::group_by(document) %>%
+      dplyr::top_n(topic_per_doc, gamma) %>%
       dplyr::ungroup()
     
     overlap <- ref_topics %>%
