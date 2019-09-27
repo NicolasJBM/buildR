@@ -91,11 +91,41 @@ text_eval_stm <- function(
   
   if (!is.null(keywords)){
     
+    keywords <- keywords %>%
+      dplyr::mutate(keywords = purrr::map_chr(keywords, tm::stemDocument)) %>%
+      dplyr::mutate(keywords = purrr::map_chr(keywords, unique))
     
     topic_terms <- tidytext::tidy(model, matrix = "beta") %>%
       dplyr::group_by(topic) %>%
       dplyr::top_n(terms_per_topic, beta) %>%
       dplyr::ungroup()
+    
+    
+    
+    
+    
+    
+    
+    ref_topics <- tidytext::tidy(model, matrix = "gamma", document_names = rownames(dtm)) %>%
+      dplyr::left_join(topic_terms, by = "topic") %>%
+      dplyr::select(document, topic, term) %>%
+      dplyr::group_by(document, topic) %>%
+      tidyr::nest() %>%
+      dplyr::left_join(keywords, by = "document") %>%
+      dplyr::mutate(
+        common = purrr::map2_dbl(data, keywords, function(x,y) length(intersect(unlist(x),unlist(y)))),
+        nbkw = purrr::map_dbl(keywords, length)
+      ) %>%
+      dplyr::select(-data, -keywords) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(document) %>%
+      tidyr::nest() %>%
+      dplyr::mutate(data = purrr::map(data, function(x) filter(x, common > 0)))
+      
+      
+    
+    
+    
     
     
     

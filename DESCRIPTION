@@ -47,4 +47,5 @@ Imports:
     doSNOW,
     koRpus,
     koRpus.lang.en,
-    intergraph
+    intergraph,
+    broom
