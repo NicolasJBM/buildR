@@ -14,7 +14,7 @@
 #' @importFrom purrr map
 #' @export
 
-text_unbreak <- function(document){
+text_recompose <- function(document){
   
   stopifnot(
     is.character(document),

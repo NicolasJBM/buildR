@@ -10,7 +10,7 @@
 #' @importFrom purrr map_dbl
 #' @export
 
-text_assess_read <- function(text){
+text_eval_read <- function(text){
   tibble::tibble(text = text) %>%
     dplyr::mutate(
       text = purrr::map(text, koRpus::tokenize, format = "obj", lang = "en")

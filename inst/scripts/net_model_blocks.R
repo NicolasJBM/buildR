@@ -1,7 +1,7 @@
 
 
 
-net_node_equivalence <- function(graph){
+net_model_blocks <- function(graph){
   
   
   
