@@ -6,7 +6,7 @@
 \usage{
 text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
   content = NULL, init.type = "Spectral", seed = 1,
-  keywords = NULL, topic_per_doc = 5, terms_per_topic = 5)
+  keywords = NULL, terms_per_topic = 5)
 }
 \arguments{
 \item{dtm}{dtm.}
@@ -22,8 +22,6 @@ text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
 \item{seed}{Numeric}
 
 \item{keywords}{Tibble.}
-
-\item{topic_per_doc}{Integer.}
 
 \item{terms_per_topic}{Integer.}
 }

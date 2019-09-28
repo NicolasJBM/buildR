@@ -4,16 +4,21 @@
 \alias{text_apply_stm}
 \title{Apply the topic mode to a new corpus of documents.}
 \usage{
-text_apply_stm(bow, stm, min_gamma, max_topic)
+text_apply_stm(bow, stm, labels = NULL, keywords = NULL,
+  min_gamma = 0.1, min_common = 1)
 }
 \arguments{
 \item{bow}{Tibble. Bag of words as returned by the function text_semrel2bow.}
 
 \item{stm}{stm. Structural topic model as returned by the function stm.}
 
+\item{labels}{Tibble. One variable for "topic", one variable for "label".}
+
+\item{keywords}{Tibble. One variable specifying the "document", one variable containing the "keywords" as a character vector.}
+
 \item{min_gamma}{Numeric. Minumum strength of the relationship between topic and socument.}
 
-\item{max_topic}{Integer. Maximum number of topics allowed per document.}
+\item{min_common}{Integer. Maximum number of topics allowed per document.}
 }
 \value{
 A tibble linking topics and documents for a new corpus.

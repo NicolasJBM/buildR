@@ -6,7 +6,6 @@
 #' @param init.type     Character.
 #' @param seed          Numeric
 #' @param keywords      Tibble.
-#' @param topic_per_doc Integer.
 #' @param terms_per_topic Integer.
 #' @return A tibble with various metrics of tm quality for each possible combination of the topic number and seed
 #' @importFrom dplyr select
@@ -17,17 +16,20 @@
 #' @importFrom dplyr rename
 #' @importFrom dplyr left_join
 #' @importFrom dplyr summarise_all
+#' @importFrom dplyr summarise
 #' @importFrom dplyr sample_n
 #' @importFrom dplyr case_when
 #' @importFrom dplyr %>%
 #' @importFrom dplyr rename
 #' @importFrom dplyr top_n
+#' @importFrom dplyr bind_cols
 #' @importFrom tidyr nest
 #' @importFrom tidyr unnest
 #' @importFrom tm stemDocument
 #' @importFrom purrr map
 #' @importFrom purrr map2
 #' @importFrom purrr map_int
+#' @importFrom purrr map_dbl
 #' @importFrom purrr pmap
 #' @importFrom tibble as_tibble
 #' @importFrom stm stm
@@ -48,7 +50,6 @@ text_eval_stm <- function(
   init.type = "Spectral",
   seed = 1,
   keywords = NULL,
-  topic_per_doc = 5,
   terms_per_topic = 5
   ){
   
@@ -59,7 +60,14 @@ text_eval_stm <- function(
   term <- NULL
   data <- NULL
   terms <- NULL
-  intersection <- NULL
+  common <- NULL
+  nbkw <- NULL
+  coverage <- NULL
+  topcics <- NULL
+  common_max <- NULL
+  common_avg <- NULL
+  coverage_max <- NULL
+  coverage_avg <- NULL
   
   heldout <- stm::make.heldout(dtm)
   
@@ -91,86 +99,49 @@ text_eval_stm <- function(
   
   if (!is.null(keywords)){
     
-    keywords <- keywords %>%
-      dplyr::mutate(keywords = purrr::map_chr(keywords, tm::stemDocument)) %>%
-      dplyr::mutate(keywords = purrr::map_chr(keywords, unique))
-    
     topic_terms <- tidytext::tidy(model, matrix = "beta") %>%
       dplyr::group_by(topic) %>%
       dplyr::top_n(terms_per_topic, beta) %>%
+      dplyr::summarise(term = list(term)) %>%
       dplyr::ungroup()
     
+    keep_topics <- function(kw,trm){
+      trm %>%
+        dplyr::mutate(common = purrr::map_dbl(term, function(trm,kw) length(intersect(kw, trm)), kw = kw)) %>%
+        dplyr::mutate(nbkw = length(unique(kw))) %>%
+        dplyr::filter(nbkw >= 1, common >= 1) %>%
+        dplyr::mutate(coverage = common / nbkw) %>%
+        dplyr::select(topic, common, coverage) %>%
+        unique() %>%
+        na.omit() %>%
+        dplyr::summarise(
+          topcics = n(),
+          common_max = sum(common),
+          common_avg = mean(common),
+          coverage_max = max(coverage),
+          coverage_avg = mean(coverage)
+        )
+    }
+    
+    overlap <- keywords %>%
+      dplyr::mutate(coverage = purrr::map(keywords, keep_topics, trm = topic_terms)) %>%
+      dplyr::select(-keywords) %>%
+      tidyr::unnest(coverage)
     
     
-    
-    
-    
-    
-    ref_topics <- tidytext::tidy(model, matrix = "gamma", document_names = rownames(dtm)) %>%
-      dplyr::left_join(topic_terms, by = "topic") %>%
-      dplyr::select(document, topic, term) %>%
-      dplyr::group_by(document, topic) %>%
-      tidyr::nest() %>%
-      dplyr::left_join(keywords, by = "document") %>%
-      dplyr::mutate(
-        common = purrr::map2_dbl(data, keywords, function(x,y) length(intersect(unlist(x),unlist(y)))),
-        nbkw = purrr::map_dbl(keywords, length)
-      ) %>%
-      dplyr::select(-data, -keywords) %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(document) %>%
-      tidyr::nest() %>%
-      dplyr::mutate(data = purrr::map(data, function(x) filter(x, common > 0)))
-      
-      
-    
-    
-    
-    
-    
-    
-    ref_topics <- tidytext::tidy(model, matrix = "gamma", document_names = rownames(dtm)) %>%
-      dplyr::group_by(document) %>%
-      dplyr::top_n(topic_per_doc, gamma) %>%
-      dplyr::ungroup()
-    
-    overlap <- ref_topics %>%
-      dplyr::left_join(topic_terms, by = "topic") %>%
-      dplyr::select(document, term) %>%
-      dplyr::group_by(document) %>%
-      tidyr::nest() %>%
-      dplyr::left_join(keywords, by = "document")
-    
-    rm(ref_topics, topic_terms, keywords)
-    gc()
-      
     overlap <- overlap %>%
-      dplyr::mutate(data = purrr::map(data, unlist)) %>%
-      dplyr::rename(terms = data) %>%
-      dplyr::mutate(terms = purrr::map(terms, tm::stemDocument)) %>%
-      dplyr::mutate(terms = purrr::map(terms, unique)) %>%
-      dplyr::mutate(keywords = purrr::map(keywords, function(x) if (!is.null(x)) tm::stemDocument(x) else NA)) %>%
-      dplyr::mutate(keywords = purrr::map(keywords, unique)) %>%
-      dplyr::mutate(
-        intersection = purrr::map2_dbl(terms, keywords, function(x,y) length(intersect(x,y))),
-        union = purrr::map2_dbl(terms, keywords, function(x,y) length(union(x,y))),
-        term_not_key = purrr::map2_dbl(terms, keywords, function(x,y) length(setdiff(x,y))),
-        key_not_term = purrr::map2_dbl(keywords, terms, function(x,y) length(setdiff(x,y)))
-      ) %>%
-      dplyr::mutate(
-        terms = purrr::map_int(terms, length),
-        keywords = purrr::map_int(keywords, length),
-      ) %>%
-      dplyr::mutate(
-        jaccard = intersection / union,
-        intensity = intersection / terms,
-        coverage = intersection / keywords
-      ) %>%
-      dplyr::select(-document) %>%
-      dplyr::summarise_all(mean)
+      dplyr::ungroup() %>%
+      dplyr::mutate_if(is.numeric, function(x) replace(x, !is.finite(x), NA)) %>%
+      na.omit() %>%
+      dplyr::summarise(
+        topcics = mean(topcics),
+        common_max = mean(common_max),
+        common_avg = mean(common_avg),
+        coverage_max = mean(coverage_max),
+        coverage_avg = mean(coverage_avg)
+      )
     
-    stm_quality <- bind_cols(stm_quality, overlap)
-    rm(overlap)
+    stm_quality <- dplyr::bind_cols(stm_quality, overlap)
   }
   
   return(stm_quality)

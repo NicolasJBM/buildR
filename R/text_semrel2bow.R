@@ -1,6 +1,6 @@
 #' Extract bags of words from semating relationships.
 #' @param semrel   Tibble. Semantic for one document relationships as returned by text_txt2semrel.
-#' @param basis    Character. Whether a bag of "word" or a bag of "lemma" should be returned.
+#' @param basis    Character. Whether a bag of "word", a bag of "lemma", or a bag of "stem" should be returned.
 #' @param keep_pos Character vector. Parts of speech which should be kept to build the bags of words
 #' @param min_count Numeric. Minimum number of occurrences for a term to be kept.
 #' @return A tibble simplified into a bag of words.

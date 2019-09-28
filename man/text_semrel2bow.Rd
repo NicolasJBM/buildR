@@ -10,7 +10,7 @@ text_semrel2bow(semrel, basis = "lemma", keep_pos = c("NOUN", "PROPN",
 \arguments{
 \item{semrel}{Tibble. Semantic for one document relationships as returned by text_txt2semrel.}
 
-\item{basis}{Character. Whether a bag of "word" or a bag of "lemma" should be returned.}
+\item{basis}{Character. Whether a bag of "word", a bag of "lemma", or a bag of "stem" should be returned.}
 
 \item{keep_pos}{Character vector. Parts of speech which should be kept to build the bags of words}
 

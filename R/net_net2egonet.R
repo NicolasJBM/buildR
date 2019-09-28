@@ -1,6 +1,6 @@
 #' Make an tidygraph from an edgelist and a set of nodes attributes.
 #' @param graph      Tidygraph.
-#' @param terms      Character. Regular expression to find the focal patterns.
+#' @param pattern    Character. Regular expression to find the focal patterns.
 #' @param separation Numeric. Maximum number of edges between focal and selected nodes.
 #' @return A tidygraph
 #' @importFrom igraph graph_from_edgelist
@@ -14,7 +14,7 @@
 #' @importFrom tibble rownames_to_column
 #' @export
 
-net_net2egonet <- function(graph, terms, separation = 2){
+net_get_egonet <- function(graph, pattern, separation = 2){
   
   name <- NULL
   edges <- NULL
@@ -27,7 +27,7 @@ net_net2egonet <- function(graph, terms, separation = 2){
   nodes <- as.data.frame(tidygraph::activate(graph, "nodes")) %>%
     dplyr::mutate(name = 1:length(label))
   
-  focal <- dplyr::filter(nodes, stringr::str_detect(label, terms))$name
+  focal <- dplyr::filter(nodes, stringr::str_detect(label, pattern))$name
   
   graph %>%
     tidygraph::activate("nodes") %>%
