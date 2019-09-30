@@ -49,4 +49,7 @@ Imports:
     koRpus.lang.en,
     intergraph,
     broom,
-    fuzzyjoin
+    fuzzyjoin,
+    htmlwidgets,
+    rhandsontable,
+    shinythemes
