@@ -16,6 +16,7 @@
 #' @importFrom shiny numericInput
 #' @importFrom shiny textAreaInput
 #' @importFrom shiny selectInput
+#' @importFrom shiny sliderInput
 #' @importFrom shiny checkboxInput
 #' @importFrom shiny downloadButton
 #' @importFrom shiny downloadHandler
@@ -78,10 +79,15 @@ text_test_regex <- function(dictionary, corpus) {
         icon = icon("eye"),
         miniContentPanel(
           fillCol(
-            flex = c(1,1,10),
+            flex = c(1,1,1,10),
             fillRow(
-              flex = c(1, 1, 1),
+              flex = c(1, 1),
               uiOutput("pattern"),
+              checkboxInput("match", "Show matches?", value = TRUE)
+            ),
+            
+            fillRow(
+              flex = c(1, 1),
               textInput("try", "Or try:"),
               uiOutput("text")
             ),
@@ -89,20 +95,16 @@ text_test_regex <- function(dictionary, corpus) {
             tags$hr(),
             
             fillRow(
-              htmlOutput("view")
+              flex = c(1,2),
+              htmlOutput("view"),
+              fillCol(
+                flex = c(11,1),
+                rhandsontable::rHandsontableOutput("edit"),
+                shiny::actionButton("apply", "Apply change")
+              )
             )
           )
         )
-      ),
-      miniTabPanel("Correct patterns",
-                   icon = icon("edit"),
-                   miniContentPanel(
-                     fillRow(
-                       flex = c(10,2),
-                       rhandsontable::rHandsontableOutput("edit"),
-                       shiny::actionButton("apply", "Apply change")
-                     )
-                   )
       )
     )
   )
@@ -130,25 +132,37 @@ text_test_regex <- function(dictionary, corpus) {
     })
     
     output$text <- shiny::renderUI({
-      choice <- 1:length(values$corpus)
-      shiny::selectInput(
-        "text",
-        "Text:",
-        choices = choice,
-        multiple = FALSE
+      shiny::sliderInput(
+        "texts",
+        "Range of texts",
+        min = 1,
+        max = length(values$corpus),
+        value = c(1,length(values$corpus)),
+        step = 1,
+        round = TRUE
       )
     })
     
     selectext <- reactive({
-      if (!is.null(input$text)) text <- values$corpus[as.numeric(input$text)] else text <- values$corpus[1]
+      if (!is.null(input$texts)) text <- values$corpus[input$texts[1]:input$texts[2]] else text <- values$corpus[1:5]
       text
     })
     
     output$view <- renderUI({
       if (!is.null(selectext()) & !is.null(input$pattern)){
-        text <- selectext()
-        if (!is.null(input$try) & input$try != "") pattern <- input$try else pattern <- input$pattern
-        output <- stringr::str_view_all(text, pattern)
+        text <- tolower(selectext())
+        if (input$match == FALSE){
+          pattern = paste(values$edit$pattern, collapse = "|")
+          match = FALSE
+        } else if (!is.null(input$try) & input$try != "") {
+          pattern <- input$try
+          match = TRUE
+        } else {
+          pattern <- input$pattern
+          match = TRUE
+        }
+        
+        output <- stringr::str_view_all(text, pattern, match = match)
         output <- gsub("<span class='match'>", '<font size="4" color="red"><b>', output$x$html)
         output <- gsub("</span>", "</b></font>", output)
       } else output <- ""
@@ -158,7 +172,7 @@ text_test_regex <- function(dictionary, corpus) {
     # Editable table
     output$edit <- renderRHandsontable({
       edit <- values$edit %>%
-        rhandsontable(stretchH = "all", width = '100%', height = 400, rowHeaders = FALSE)
+        rhandsontable(stretchH = "all", width = '100%', height = "400px", rowHeaders = FALSE)
     })
     
     # Add the references manually selected
@@ -170,8 +184,7 @@ text_test_regex <- function(dictionary, corpus) {
     
     # List of action to do when exiting
     observeEvent(input$done, {
-      values$edit
-      stopApp()
+      stopApp(values$edit)
     })
   }
   runGadget(ui, server, viewer = paneViewer(minHeight = "maximize"))
