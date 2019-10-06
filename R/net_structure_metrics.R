@@ -36,6 +36,7 @@ net_structure_metrics <- function(graph, node_com){
   community <- NULL
   from_com <- NULL
   to_com <- NULL
+  singleton <- NULL
   
   # remove singletons
   connected <- graph %>%
@@ -47,14 +48,16 @@ net_structure_metrics <- function(graph, node_com){
     missing = nrow(dplyr::filter(as.data.frame(tidygraph::activate(graph, "nodes")), occurrences == 0)),
     singleton = nrow(dplyr::filter(as.data.frame(tidygraph::activate(graph, "nodes")), occurrences > 0, cent_degree == 0)),
     connected = nrow(dplyr::filter(as.data.frame(tidygraph::activate(graph, "nodes")), occurrences > 0, cent_degree > 0)),
-  )
+  ) %>%
+    mutate(
+      nodes = singleton + connected
+    )
   
   g <- igraph::as.igraph(connected)
   dyads <- igraph::dyad_census(connected)
   triads <- igraph::triad_census(g)
   
   structure2 <- tibble::tibble(
-    nodes = length(igraph::V(g)),
     possible_edges = length(igraph::V(g)) * (length(igraph::V(g))-1),
     mutual_edges = dyads$mut,
     asymetric_edges = dyads$asym,

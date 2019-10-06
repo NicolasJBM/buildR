@@ -6,6 +6,7 @@
 #' @importFrom tidygraph as_tbl_graph
 #' @importFrom tidygraph activate
 #' @importFrom dplyr select
+#' @importFrom dplyr everything
 #' @importFrom dplyr left_join
 #' @importFrom dplyr full_join
 #' @importFrom dplyr rename
@@ -29,44 +30,41 @@ net_edge2graph <- function(x, nodes_properties = NULL){
   name <- NULL
   edges <- NULL
   id <- NULL
+  from_rank <- NULL
+  to_rank <- NULL
   
   # Create the graph from the list od edges
   graph <- x %>%
-    select(from, to) %>%
+    dplyr::select(from, to) %>%
     as.matrix() %>%
-    graph_from_edgelist(directed = TRUE) %>%
-    as_tbl_graph()
+    igraph::graph_from_edgelist(directed = TRUE) %>%
+    tidygraph::as_tbl_graph()
   
   # Change from names to ids to append edge attributes
   nodes <- graph %>%
-    activate(nodes) %>%
+    tidygraph::activate("nodes") %>%
     as.data.frame() %>%
-    rownames_to_column("id") %>%
-    select(id, from = name) %>%
-    mutate(to = from) %>%
-    mutate(id = as.integer(id))
+    tibble::rownames_to_column("rank") %>%
+    dplyr::mutate(rank = as.numeric(rank))
   
-  edge_properties <- x %>%
-    left_join(select(nodes, from, id), by = "from") %>%
-    select(-from) %>%
-    rename(from = id) %>%
-    left_join(select(nodes, to, id), by = "to") %>%
-    select(-to) %>%
-    rename(to = id) %>%
-    select(from, to, everything())
+  # Replace name by rank in edges
+  edges <- x %>%
+    dplyr::left_join(dplyr::select(nodes, from = name, from_rank = rank),  by = "from") %>%
+    dplyr::left_join(dplyr::select(nodes, to = name, to_rank = rank),  by = "to") %>%
+    dplyr::select(-from, -to) %>%
+    dplyr::select(from = from_rank, to = to_rank, dplyr::everything())
   
   # Append nodes and edges attributes
   if (!is.null(nodes_properties)){
-    graph <-graph %>%
-      activate(nodes) %>%
-      full_join(nodes_properties, by = "name")
+    nodes <- nodes %>%
+      dplyr::left_join(nodes_properties, by = "name")
   }
   
-  if (length(x) > 2){
-    graph <-graph %>%
-      activate(edges) %>%
-      left_join(edge_properties, by = c("from","to"))
-  }
+  graph <- graph %>%
+    tidygraph::activate("nodes") %>%
+    dplyr::full_join(nodes, by = "name") %>%
+    tidygraph::activate("edges") %>%
+    dplyr::full_join(edges, by = c("from","to"))
   
   # Return the results
   return(graph)

@@ -7,6 +7,7 @@
 #' @importFrom dplyr select
 #' @importFrom dplyr left_join
 #' @importFrom dplyr mutate
+#' @importFrom tidyr replace_na
 #' @export
 
 
@@ -15,6 +16,7 @@ net_compute_overlap <- function(graph){
   edges <- NULL
   from <- NULL
   to <- NULL
+  occ_from <- NULL
   weight <- NULL
   name <- NULL
   occurrences <- NULL
@@ -22,18 +24,22 @@ net_compute_overlap <- function(graph){
   nodes <- as.data.frame(tidygraph::activate(graph, "nodes"))
   
   if ("occurrences" %in% names(nodes)){
-    occ_from <- nodes %>%
-      select(from = name, occ_from = occurrences)
+    addocc <- nodes %>%
+      select(rank, occurrences)
+      
   } else {
-    occ_from <- graph %>%
+    addocc <- graph %>%
       tidygraph::activate("edges") %>%
       as.data.frame() %>%
       dplyr::filter(from == to) %>%
-      dplyr::select(from, occ_from = weight)
+      dplyr::select(rank = from, occurrences = weight)
   }
   
-  occ_to <- occ_from %>%
-    dplyr::rename(to = from, occ_to = occ_from)
+  occ_from <- addocc %>%
+    dplyr::rename(from = rank, occ_from = occurrences)
+  
+  occ_to <- addocc %>%
+    dplyr::rename(to = rank, occ_to = occurrences)
   
   graph %>%
     tidygraph::activate("edges") %>%
@@ -47,6 +53,7 @@ net_compute_overlap <- function(graph){
     dplyr::select(-occ_from, -occ_to) %>%
     na.omit() %>%
     tidygraph::activate("nodes") %>%
-    dplyr::mutate(occurrences = arrange(occ_from, from)$occ_from) %>%
+    dplyr::left_join(addocc, by = "rank") %>%
+    tidyr::replace_na(list(occurrences = 0)) %>%
     na.omit()
 }
