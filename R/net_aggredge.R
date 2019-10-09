@@ -34,6 +34,7 @@ net_aggredge <- function(edgelist, mode = "rolling", step = 1, range = 1){
   weight <- NULL
   start <- NULL
   end <- NULL
+  edges <- NULL
   
   if (mode == "full"){
     aggregation <- tibble::tibble(
@@ -69,7 +70,7 @@ net_aggredge <- function(edgelist, mode = "rolling", step = 1, range = 1){
   
   aggregation <- aggregation %>%
     dplyr::mutate(edges = purrr::map2(start, end, aggregate_edges, z = fulledgelist)) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest(edges) %>%
     dplyr::ungroup()
   
   return(aggregation)
