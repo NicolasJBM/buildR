@@ -5,6 +5,7 @@
 #' @param node_weight Character. Name of the variable containing the weights of the nodes in each graph.
 #' @param node_com    Character. Name of the variable containing the community of the nodes in each graph. 
 #' @param edge_weight Character. Name of the variable containing  the weights of the edges in each graph.
+#' @param lscale      Numeric. Scaling factor for labels.
 #' @param vscale      Numeric. Scaling factor for vertices.
 #' @param escale      Numeric. Scaling factor for edges.
 #' @param colors      Character vector. Colors of the communities.
@@ -31,8 +32,9 @@ net_list2dynamic <- function(graphlist,
                              node_weight = NULL,
                              node_com = NULL,
                              edge_weight = NULL,
-                             vscale = 0.001,
-                             escale = 0.001,
+                             lscale = 0.05,
+                             vscale = 0.05,
+                             escale = 0.05,
                              colors = c("red","blue","green","orange","purple","darkgreen","darkred")){
   
   stopifnot(
@@ -106,7 +108,7 @@ net_list2dynamic <- function(graphlist,
                                 vertex.border="#333333",  
                                 vertex.cex = (timenet[[length(timenet)]] %v% "weight")*vscale,    
                                 vertex.col = colors[as.integer(as.factor(timenet[[length(timenet)]] %v% "community"))], 
-                                label.cex = 0.5,
+                                label.cex = lscale,
                                 edge.lwd = (timenet[[length(timenet)]] %e% "weight")*escale,   
                                 edge.col = '#55555599',  
                                 launchBrowser=TRUE,  
