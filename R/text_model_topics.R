@@ -77,7 +77,8 @@ text_model_topics <- function(dtm,
       dplyr::mutate(common = purrr::map2_dbl(keywords, label, function(x,y) length(intersect(x, y)))) %>%
       dplyr::mutate(nbkw = purrr::map(keywords, function(x) length(unique(x)))) %>%
       dplyr::select(-label, -keywords) %>%
-      dplyr::filter(nbkw <= 2 | common >= min_common)
+      dplyr::filter(nbkw <= 2 | common >= min_common) %>%
+      dplyr::select(-nbkw)
     
   }
   
