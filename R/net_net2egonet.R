@@ -32,7 +32,7 @@ net_get_egonet <- function(graph, pattern, separation = 2){
   graph %>%
     tidygraph::activate("nodes") %>%
     tidygraph::mutate(distance = tidygraph::node_distance_to(focal, mode = "all")) %>%
-    dplyr::filter(name %in% focal | distance <= separation) %>%
+    dplyr::filter(name %in% focal | distance <= separation) %>%  # or use to_local_neighborhood
     tidygraph::mutate(degree = tidygraph::centrality_degree(mode = "all")) %>%
     dplyr::filter(degree > 0)
 }
