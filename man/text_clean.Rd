@@ -4,10 +4,19 @@
 \alias{text_clean}
 \title{Remove html tags, remove double spaces, convert to ASCII.}
 \usage{
-text_clean(text)
+text_clean(text, clndash = TRUE, clnpunct = TRUE, clnascii = TRUE,
+  clnspc = TRUE)
 }
 \arguments{
 \item{text}{character. String to be cleaned.}
+
+\item{clndash}{logical. Whether spaces should be removed around dashes.}
+
+\item{clnpunct}{logical. Whether punctuations should be properly formated (no space before, space after).}
+
+\item{clnascii}{logical. Whether non-ascii characters should be replaced by their closest ascii match.}
+
+\item{clnspc}{logical. Trim white spaces and prevent double-spaces.}
 }
 \value{
 A clean string.
