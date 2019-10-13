@@ -11,7 +11,7 @@
 #' @export
 
 
-net_compute_overlap <- function(graph){
+net_metrics_overlap <- function(graph){
   
   edges <- NULL
   from <- NULL
