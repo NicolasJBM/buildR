@@ -6,7 +6,7 @@
 \usage{
 text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
   content = NULL, init.type = "Spectral", seed = 1,
-  keywords = NULL, terms_per_topic = 5)
+  keywords = NULL, min_beta = 0.01, min_gamma = 0.1)
 }
 \arguments{
 \item{dtm}{dtm.}
@@ -23,9 +23,13 @@ text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
 
 \item{keywords}{Tibble.}
 
-\item{terms_per_topic}{Integer.}
+\item{min_beta}{Numeric. Minimum strength of the relationship between term and topic.}
+
+\item{min_gamma}{Numeric. Minimum strength of the relationship between document and topic.}
 }
 \value{
+A list with the "topic_model", the "topic_label", and the "document_topic".
+
 A tibble with various metrics of tm quality for each possible combination of the topic number and seed
 }
 \description{

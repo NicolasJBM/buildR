@@ -6,8 +6,8 @@
 \usage{
 text_model_topics(dtm, topic_nbr = 0, prevalence = NULL,
   content = NULL, init.type = "Spectral", seed = 1234,
-  keywords = NULL, terms_per_topic = 5, baselab = "prob",
-  frexweight = 0.6, min_gamma = 0.1, min_common = 1)
+  keywords = NULL, baselab = "prob", frexweight = 0.6,
+  min_beta = 0.01, min_gamma = 0.1)
 }
 \arguments{
 \item{dtm}{dtm.}
@@ -24,18 +24,16 @@ text_model_topics(dtm, topic_nbr = 0, prevalence = NULL,
 
 \item{keywords}{Tibble.}
 
-\item{terms_per_topic}{Integer.}
-
 \item{baselab}{Character. Whether labels should be based on "prob", "frex", "lift", or "score".}
 
 \item{frexweight}{Numeric. The weight on discriminance in term selection.}
 
-\item{min_gamma}{Numeric. Minimum strength of the relationship between document and topic.}
+\item{min_beta}{Numeric. Minimum strength of the relationship between term and topic.}
 
-\item{min_common}{Integer. Minimum number of keywords in the label.}
+\item{min_gamma}{Numeric. Minimum strength of the relationship between document and topic.}
 }
 \value{
-A list with the "topic_model", the "topic_label", and the "document_topic".
+A list with the "topic_model", the "topic_term", the "topic_label", and the "topic_document".
 }
 \description{
 Apply the topic mode to a new corpus of documents.

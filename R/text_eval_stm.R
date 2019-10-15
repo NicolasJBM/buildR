@@ -6,7 +6,9 @@
 #' @param init.type     Character.
 #' @param seed          Numeric
 #' @param keywords      Tibble.
-#' @param terms_per_topic Integer.
+#' @param min_beta      Numeric. Minimum strength of the relationship between term and topic.
+#' @param min_gamma     Numeric. Minimum strength of the relationship between document and topic.
+#' @return A list with the "topic_model", the "topic_label", and the "document_topic".
 #' @return A tibble with various metrics of tm quality for each possible combination of the topic number and seed
 #' @importFrom dplyr select
 #' @importFrom dplyr filter
@@ -50,7 +52,8 @@ text_eval_stm <- function(
   init.type = "Spectral",
   seed = 1,
   keywords = NULL,
-  terms_per_topic = 5
+  min_beta = 0.01,
+  min_gamma =  0.1
   ){
   
   bound <- NULL
@@ -63,85 +66,73 @@ text_eval_stm <- function(
   common <- NULL
   nbkw <- NULL
   coverage <- NULL
-  topcics <- NULL
-  common_max <- NULL
-  common_avg <- NULL
-  coverage_max <- NULL
-  coverage_avg <- NULL
+  topics <- NULL
+  nbtrm <- NULL
+  prop_kw <- NULL
+  prop_trm <- NULL
+  jaccard <- NULL
   
   heldout <- stm::make.heldout(dtm)
   
-  model <- stm::stm(
+  model <- buildR::text_model_topics(
     dtm,
-    K = topic_nbr,
+    topic_nbr = topic_nbr,
     prevalence = prevalence,
     content = content,
     init.type = init.type,
     seed = seed,
-    verbose = FALSE
+    keywords = keywords,
+    min_beta = min_beta,
+    min_gamma = min_gamma
   )
   
+  tm <- model$topic_model
+  
   stm_quality <- tibble::tibble(
-    exclusivity = mean(stm::exclusivity(model), na.rm = TRUE),
-    semantic_coherence = mean(stm::semanticCoherence(model, documents = dtm), na.rm = TRUE),
-    residuals = stm::checkResiduals(model, dtm)$dispersion,
-    held_out_likelihood = stm::eval.heldout(model, heldout$missing)$expected.heldout,
-    bound = unlist(max(model$convergence$bound)),
-    lfact = unlist(factorial(model$settings$dim$K)),
-    iter = length(model$convergence$bound)
+    exclusivity = mean(stm::exclusivity(tm), na.rm = TRUE),
+    semantic_coherence = mean(stm::semanticCoherence(tm, documents = dtm), na.rm = TRUE),
+    residuals = stm::checkResiduals(tm, dtm)$dispersion,
+    held_out_likelihood = stm::eval.heldout(tm, heldout$missing)$expected.heldout,
+    bound = unlist(max(tm$convergence$bound)),
+    lfact = unlist(factorial(tm$settings$dim$K)),
+    iter = length(tm$convergence$bound)
   ) %>%
     dplyr::mutate(
-      lbound = bound + lfact,
-      label = list(stm::labelTopics(model, n = terms_per_topic))
+      lbound = bound + lfact
     )
   
   rm(heldout)
   
   if (!is.null(keywords)){
     
-    topic_terms <- tidytext::tidy(model, matrix = "beta") %>%
-      dplyr::group_by(topic) %>%
-      dplyr::top_n(terms_per_topic, beta) %>%
-      dplyr::summarise(term = list(term)) %>%
-      dplyr::ungroup()
-    
-    keep_topics <- function(kw,trm){
-      trm %>%
-        dplyr::mutate(common = purrr::map_dbl(term, function(trm,kw) length(intersect(kw, trm)), kw = kw)) %>%
-        dplyr::mutate(nbkw = length(unique(kw))) %>%
-        dplyr::filter(nbkw >= 1, common >= 1) %>%
-        dplyr::mutate(coverage = common / nbkw) %>%
-        dplyr::select(topic, common, coverage) %>%
-        unique() %>%
-        na.omit() %>%
-        dplyr::summarise(
-          topcics = n(),
-          common_max = sum(common),
-          common_avg = mean(common),
-          coverage_max = max(coverage),
-          coverage_avg = mean(coverage)
-        )
-    }
-    
-    overlap <- keywords %>%
-      dplyr::mutate(coverage = purrr::map(keywords, keep_topics, trm = topic_terms)) %>%
-      dplyr::select(-keywords) %>%
-      tidyr::unnest(coverage)
-    
-    
-    overlap <- overlap %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate_if(is.numeric, function(x) replace(x, !is.finite(x), NA)) %>%
-      na.omit() %>%
-      dplyr::summarise(
-        topcics = mean(topcics),
-        common_max = mean(common_max),
-        common_avg = mean(common_avg),
-        coverage_max = mean(coverage_max),
-        coverage_avg = mean(coverage_avg)
+    td <- model$topic_document %>%
+      select(-nbkw) %>%
+      filter(common > 0) %>%
+      unique() %>%
+      group_by(document) %>%
+      summarise(
+        topic = n(),
+        gamma = max(gamma),
+        common = max(common),
+        prop_kw = max(prop_kw),
+        prop_trm = max(prop_trm),
+        jaccard = max(jaccard)
+      ) %>%
+      select(-document) %>%
+      summarise(
+        document = n(),
+        tpd_min = min(topic),
+        tpd_avg = mean(topic),
+        tpd_med = median(topic),
+        tpd_max = max(topic),
+        gamma_avg = mean(gamma),
+        common_avg = mean(common),
+        prop_kw_avg = mean(prop_kw),
+        prop_trm_avg = mean(prop_trm),
+        jaccard_avg = mean(jaccard)
       )
     
-    stm_quality <- dplyr::bind_cols(stm_quality, overlap)
+    stm_quality <- dplyr::bind_cols(stm_quality, td)
   }
   
   return(stm_quality)
