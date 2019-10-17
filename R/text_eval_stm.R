@@ -87,8 +87,10 @@ text_eval_stm <- function(
   )
   
   tm <- model$topic_model
+  td <- model$topic_document
   
   stm_quality <- tibble::tibble(
+    topics = length(unique(td$topic)),
     exclusivity = mean(stm::exclusivity(tm), na.rm = TRUE),
     semantic_coherence = mean(stm::semanticCoherence(tm, documents = dtm), na.rm = TRUE),
     residuals = stm::checkResiduals(tm, dtm)$dispersion,
@@ -105,7 +107,7 @@ text_eval_stm <- function(
   
   if (!is.null(keywords)){
     
-    td <- model$topic_document %>%
+    td <- td %>%
       select(-nbkw) %>%
       filter(common > 0) %>%
       unique() %>%
