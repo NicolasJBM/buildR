@@ -4,15 +4,13 @@
 \alias{text_apply_stm}
 \title{Apply the topic mode to a new corpus of documents.}
 \usage{
-text_apply_stm(bow, stm, labels = NULL, keywords = NULL,
-  min_gamma = 0.1, min_common = 1)
+text_apply_stm(bow, topic_model, keywords = NULL, min_gamma = 0.1,
+  min_common = 1)
 }
 \arguments{
 \item{bow}{Tibble. Bag of words as returned by the function text_semrel2bow.}
 
-\item{stm}{stm. Structural topic model as returned by the function stm.}
-
-\item{labels}{Tibble. One variable for "topic", one variable for "label".}
+\item{topic_model}{List. Structural topic model as returned by the function text_model_topics.}
 
 \item{keywords}{Tibble. One variable specifying the "document", one variable containing the "keywords" as a character vector.}
 
