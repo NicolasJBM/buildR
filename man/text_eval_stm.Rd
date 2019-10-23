@@ -6,7 +6,8 @@
 \usage{
 text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
   content = NULL, init.type = "Spectral", seed = 1,
-  keywords = NULL, min_beta = 0.01, min_gamma = 0.1)
+  keywords = NULL, min_beta = 0.01, min_gamma = 0.1,
+  min_common = 1)
 }
 \arguments{
 \item{dtm}{dtm.}
@@ -26,6 +27,8 @@ text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
 \item{min_beta}{Numeric. Minimum strength of the relationship between term and topic.}
 
 \item{min_gamma}{Numeric. Minimum strength of the relationship between document and topic.}
+
+\item{min_common}{Integer. Maximum number of topics allowed per document.}
 }
 \value{
 A list with the "topic_model", the "topic_label", and the "document_topic".

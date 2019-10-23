@@ -10,6 +10,7 @@
 #' @param frexweight      Numeric. The weight on discriminance in term selection.
 #' @param min_beta        Numeric. Minimum strength of the relationship between term and topic.
 #' @param min_gamma       Numeric. Minimum strength of the relationship between document and topic.
+#' @param min_common      Integer. Maximum number of topics allowed per document.
 #' @return A list with the "topic_model", the "topic_term", the "topic_label", and the "topic_document".
 #' @importFrom stm stm
 #' @importFrom stm labelTopics
@@ -36,7 +37,8 @@ text_model_topics <- function(dtm,
                               baselab = "prob",
                               frexweight = 0.6,
                               min_beta = 0.01,
-                              min_gamma =  0.1){
+                              min_gamma =  0.1,
+                              min_common = 1){
   
   label <- NULL
   topic <- NULL
@@ -94,7 +96,8 @@ text_model_topics <- function(dtm,
         prop_trm = common / nbtrm,
         jaccard = common / (nbkw + nbtrm - common)
       ) %>%
-      dplyr::select(-keywords, -term)
+      dplyr::select(-keywords, -term) %>%
+      dplyr::filter(nbkw <= 2 | common >= min_common)
     
   }
   

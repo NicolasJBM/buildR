@@ -8,6 +8,7 @@
 #' @param keywords      Tibble.
 #' @param min_beta      Numeric. Minimum strength of the relationship between term and topic.
 #' @param min_gamma     Numeric. Minimum strength of the relationship between document and topic.
+#' @param min_common    Integer. Maximum number of topics allowed per document.
 #' @return A list with the "topic_model", the "topic_label", and the "document_topic".
 #' @return A tibble with various metrics of tm quality for each possible combination of the topic number and seed
 #' @importFrom dplyr select
@@ -53,7 +54,8 @@ text_eval_stm <- function(
   seed = 1,
   keywords = NULL,
   min_beta = 0.01,
-  min_gamma =  0.1
+  min_gamma =  0.1,
+  min_common = 1
   ){
   
   bound <- NULL
@@ -83,7 +85,8 @@ text_eval_stm <- function(
     seed = seed,
     keywords = keywords,
     min_beta = min_beta,
-    min_gamma = min_gamma
+    min_gamma = min_gamma,
+    min_common = min_common
   )
   
   tm <- model$topic_model
@@ -109,7 +112,6 @@ text_eval_stm <- function(
     
     td <- td %>%
       select(-nbkw) %>%
-      filter(common > 0) %>%
       unique() %>%
       group_by(document) %>%
       summarise(
