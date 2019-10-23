@@ -5,7 +5,7 @@
 \title{Extract bags of words from semating relationships.}
 \usage{
 text_semrel2bow(semrel, basis = "lemma", keep_pos = c("NOUN", "PROPN",
-  "ADJ", "VERB", "ADV"), min_count = 1)
+  "ADJ", "VERB", "ADV"))
 }
 \arguments{
 \item{semrel}{Tibble. Semantic for one document relationships as returned by text_txt2semrel.}
@@ -13,8 +13,6 @@ text_semrel2bow(semrel, basis = "lemma", keep_pos = c("NOUN", "PROPN",
 \item{basis}{Character. Whether a bag of "word", a bag of "lemma", or a bag of "stem" should be returned.}
 
 \item{keep_pos}{Character vector. Parts of speech which should be kept to build the bags of words}
-
-\item{min_count}{Numeric. Minimum number of occurrences for a term to be kept.}
 }
 \value{
 A tibble simplified into a bag of words.
