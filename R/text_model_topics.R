@@ -90,6 +90,7 @@ text_model_topics <- function(dtm,
       dplyr::left_join(keywords, by = "document") %>%
       dplyr::mutate(common = purrr::map2_dbl(keywords, term, function(x,y) length(intersect(x, y)))) %>%
       dplyr::mutate(nbkw = purrr::map_dbl(keywords, function(x) length(unique(x)))) %>%
+      dplyr::mutate(nbkw = case_when(is.finite(nbkw) & nbkw > 0 ~ nbkw, TRUE ~ 1)) %>%
       dplyr::mutate(nbtrm = purrr::map_dbl(term, function(x) length(unique(x)))) %>%
       dplyr::mutate(
         prop_kw = common / nbkw,

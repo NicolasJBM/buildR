@@ -116,24 +116,24 @@ text_eval_stm <- function(
       group_by(document) %>%
       summarise(
         topic = n(),
-        gamma = max(gamma),
-        common = max(common),
-        prop_kw = max(prop_kw),
-        prop_trm = max(prop_trm),
-        jaccard = max(jaccard)
+        gamma = max(gamma, na.rm = TRUE),
+        common = max(common, na.rm = TRUE),
+        prop_kw = max(prop_kw, na.rm = TRUE),
+        prop_trm = max(prop_trm, na.rm = TRUE),
+        jaccard = max(jaccard, na.rm = TRUE)
       ) %>%
       select(-document) %>%
       summarise(
         document = n(),
-        tpd_min = min(topic),
-        tpd_avg = mean(topic),
-        tpd_med = median(topic),
-        tpd_max = max(topic),
-        gamma_avg = mean(gamma),
-        common_avg = mean(common),
-        prop_kw_avg = mean(prop_kw),
-        prop_trm_avg = mean(prop_trm),
-        jaccard_avg = mean(jaccard)
+        tpd_min = min(topic, na.rm = TRUE),
+        tpd_avg = mean(topic, na.rm = TRUE),
+        tpd_med = median(topic, na.rm = TRUE),
+        tpd_max = max(topic, na.rm = TRUE),
+        gamma_avg = mean(gamma, na.rm = TRUE),
+        common_avg = mean(common, na.rm = TRUE),
+        prop_kw_avg = mean(prop_kw, na.rm = TRUE),
+        prop_trm_avg = mean(prop_trm, na.rm = TRUE),
+        jaccard_avg = mean(jaccard, na.rm = TRUE)
       )
     
     stm_quality <- dplyr::bind_cols(stm_quality, td)
