@@ -5,6 +5,8 @@
 #' @param content       Formula
 #' @param init.type     Character.
 #' @param seed          Numeric
+#' @param iterations    Integer.
+#' @param tolerance     Numeric.
 #' @param keywords      Tibble.
 #' @param min_beta      Numeric. Minimum strength of the relationship between term and topic.
 #' @param min_gamma     Numeric. Minimum strength of the relationship between document and topic.
@@ -52,9 +54,11 @@ text_eval_stm <- function(
   content = NULL,
   init.type = "Spectral",
   seed = 1,
+  iterations = 50,
+  tolerance = 0,
   keywords = NULL,
-  min_beta = 0.01,
   min_gamma =  0.1,
+  min_beta = 0.01,
   min_common = 1
   ){
   
@@ -83,10 +87,13 @@ text_eval_stm <- function(
     content = content,
     init.type = init.type,
     seed = seed,
+    iterations = iterations,
+    tolerance = tolerance,
     keywords = keywords,
     min_beta = min_beta,
     min_gamma = min_gamma,
-    min_common = min_common
+    min_common = min_common,
+    verbose = FALSE
   )
   
   tm <- model$topic_model

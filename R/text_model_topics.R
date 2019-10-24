@@ -4,13 +4,16 @@
 #' @param prevalence      Formula
 #' @param content         Formula
 #' @param init.type       Character.
-#' @param seed            Numeric
+#' @param seed            Numeric.
+#' @param iterations      Integer.
+#' @param tolerance       Numeric.
 #' @param keywords        Tibble.
 #' @param baselab         Character. Whether labels should be based on "prob", "frex", "lift", or "score".
 #' @param frexweight      Numeric. The weight on discriminance in term selection.
-#' @param min_beta        Numeric. Minimum strength of the relationship between term and topic.
 #' @param min_gamma       Numeric. Minimum strength of the relationship between document and topic.
+#' @param min_beta        Numeric. Minimum strength of the relationship between term and topic.
 #' @param min_common      Integer. Maximum number of topics allowed per document.
+#' @param verbose         Logical.
 #' @return A list with the "topic_model", the "topic_term", the "topic_label", and the "topic_document".
 #' @importFrom stm stm
 #' @importFrom stm labelTopics
@@ -33,12 +36,15 @@ text_model_topics <- function(dtm,
                               content = NULL,
                               init.type = "Spectral",
                               seed = 1234,
+                              iterations = 50,
+                              tolerance = 0,
                               keywords = NULL,
                               baselab = "prob",
                               frexweight = 0.6,
-                              min_beta = 0.01,
                               min_gamma =  0.1,
-                              min_common = 1){
+                              min_beta = 0.01,
+                              min_common = 1,
+                              verbose = TRUE){
   
   label <- NULL
   topic <- NULL
@@ -56,7 +62,9 @@ text_model_topics <- function(dtm,
     content = content,
     init.type = init.type,
     seed = seed,
-    verbose = FALSE)
+    max.em.its = iterations,
+    emtol = tolerance,
+    verbose = verbose)
   
   topic_term <- tidytext::tidy(topic_model, matrix = "beta") %>%
     dplyr::group_by(term) %>%

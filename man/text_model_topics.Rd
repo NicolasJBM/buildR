@@ -6,8 +6,9 @@
 \usage{
 text_model_topics(dtm, topic_nbr = 0, prevalence = NULL,
   content = NULL, init.type = "Spectral", seed = 1234,
-  keywords = NULL, baselab = "prob", frexweight = 0.6,
-  min_beta = 0.01, min_gamma = 0.1, min_common = 1)
+  iterations = 50, tolerance = 0, keywords = NULL,
+  baselab = "prob", frexweight = 0.6, min_gamma = 0.1,
+  min_beta = 0.01, min_common = 1, verbose = TRUE)
 }
 \arguments{
 \item{dtm}{dtm.}
@@ -20,7 +21,11 @@ text_model_topics(dtm, topic_nbr = 0, prevalence = NULL,
 
 \item{init.type}{Character.}
 
-\item{seed}{Numeric}
+\item{seed}{Numeric.}
+
+\item{iterations}{Integer.}
+
+\item{tolerance}{Numeric.}
 
 \item{keywords}{Tibble.}
 
@@ -28,11 +33,13 @@ text_model_topics(dtm, topic_nbr = 0, prevalence = NULL,
 
 \item{frexweight}{Numeric. The weight on discriminance in term selection.}
 
-\item{min_beta}{Numeric. Minimum strength of the relationship between term and topic.}
-
 \item{min_gamma}{Numeric. Minimum strength of the relationship between document and topic.}
 
+\item{min_beta}{Numeric. Minimum strength of the relationship between term and topic.}
+
 \item{min_common}{Integer. Maximum number of topics allowed per document.}
+
+\item{verbose}{Logical.}
 }
 \value{
 A list with the "topic_model", the "topic_term", the "topic_label", and the "topic_document".
