@@ -5,7 +5,7 @@
 \title{Transform the bags of words into a document to term matrix/}
 \usage{
 text_bow2dtm(bow, min_term = 0, max_term = Inf, min_doc = 0,
-  max_doc = Inf, nbterm = 1000, docvar = NULL)
+  max_doc = Inf, nbterm = 1000, keep_terms = NULL, docvar = NULL)
 }
 \arguments{
 \item{bow}{Tibble. Output of the function text_bow_metrics. Document ids must be in a variable called "document".}
@@ -19,6 +19,8 @@ text_bow2dtm(bow, min_term = 0, max_term = Inf, min_doc = 0,
 \item{max_doc}{Integer, Remove terms appearing in more than this number of documents.}
 
 \item{nbterm}{Integer. Select this number of terms based on tf idf.}
+
+\item{keep_terms}{Character vector. List of words which should be included even if they do not meet the other criteria.}
 
 \item{docvar}{Additional information about documents to be appended to the docvar of the dtm. Document ids must be in a variable called "document".}
 }
