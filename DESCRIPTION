@@ -52,4 +52,6 @@ Imports:
     fuzzyjoin,
     htmlwidgets,
     rhandsontable,
-    shinythemes
+    shinythemes,
+    data.table,
+    rlang
