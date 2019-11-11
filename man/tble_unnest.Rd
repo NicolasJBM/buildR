@@ -2,7 +2,7 @@
 % Please edit documentation in R/tble_unnest.R
 \name{tble_unnest}
 \alias{tble_unnest}
-\title{Faster implementation of unnest.}
+\title{Faster implementation of unnest. Applicable only when the nested column is a vector (i.e. not a table or dataframe).}
 \source{
 https://stackoverflow.com/questions/40420597/r-flatten-nested-data-table/40420690#40420690
 }
@@ -18,5 +18,5 @@ tble_unnest(x, col)
 A dataframe where all variables are discrete.
 }
 \description{
-Faster implementation of unnest.
+Faster implementation of unnest. Applicable only when the nested column is a vector (i.e. not a table or dataframe).
 }

@@ -1,4 +1,4 @@
-#' Faster implementation of unnest.
+#' Faster implementation of unnest. Applicable only when the nested column is a vector (i.e. not a table or dataframe).
 #' @param x   tibble. database with a column to unnest.
 #' @param col character. Name of the column to unnest.
 #' @return A dataframe where all variables are discrete.
