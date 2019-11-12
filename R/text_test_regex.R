@@ -94,15 +94,7 @@ text_test_regex <- function(dictionary, corpus) {
             
             tags$hr(),
             
-            fillRow(
-              flex = c(1,2),
-              htmlOutput("view"),
-              fillCol(
-                flex = c(11,1),
-                rhandsontable::rHandsontableOutput("edit"),
-                shiny::actionButton("apply", "Apply change")
-              )
-            )
+            htmlOutput("view")
           )
         )
       )
@@ -162,6 +154,8 @@ text_test_regex <- function(dictionary, corpus) {
           match = TRUE
         }
         
+        pattern <- paste0("(?:^|[:punct:]|[:space:])", pattern, "(?:[:punct:]|[:space:]|$)")
+        
         output <- stringr::str_view_all(text, pattern, match = match)
         output <- gsub("<span class='match'>", '<font size="4" color="red"><b>', output$x$html)
         output <- gsub("</span>", "</b></font>", output)
@@ -169,22 +163,10 @@ text_test_regex <- function(dictionary, corpus) {
       HTML(output)
     })
     
-    # Editable table
-    output$edit <- renderRHandsontable({
-      edit <- values$edit %>%
-        rhandsontable(stretchH = "all", width = '100%', height = "400px", rowHeaders = FALSE)
-    })
-    
-    # Add the references manually selected
-    observeEvent(input$apply, {
-      values$edit <- isolate(input$edit) %>%
-        hot_to_r()
-    })
-    
     
     # List of action to do when exiting
     observeEvent(input$done, {
-      stopApp(values$edit)
+      stopApp()
     })
   }
   runGadget(ui, server, viewer = paneViewer(minHeight = "maximize"))
