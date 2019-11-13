@@ -10,6 +10,7 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr summarise_all
 #' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr left_join
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr mutate
@@ -44,6 +45,7 @@ faultlines_fau <- function(x, subgroup){
   centroids <- x %>%
     group_by(subgroup) %>%
     summarise_all(mean) %>%
+    ungroup() %>%
     gather(attribute, meanSubGp, -subgroup)
   
   # Compute for each team member its distances to the group and subgroup centroids for each variable

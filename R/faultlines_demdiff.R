@@ -10,6 +10,7 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr summarise_all
 #' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr mutate
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr left_join
@@ -43,6 +44,7 @@ faultlines_demdiff <- function(x, subgroup){
   centroids <- x %>%
     group_by(subgroup) %>%
     summarise_all(mean) %>%
+    ungroup() %>%
     gather(attribute, meanSubGp, -subgroup)
   
   # Compute de Demographic Difference index of Li and Hambrick
@@ -59,6 +61,7 @@ faultlines_demdiff <- function(x, subgroup){
     dem_diff <- x %>%
       group_by(subgroup) %>%
       summarise_all(stats::sd) %>%
+      ungroup() %>%
       gather(attribute, sdSubGp, -subgroup) %>%
       mutate(subgroup = paste0("gp", subgroup)) %>%
       spread(subgroup, sdSubGp, fill = 0) %>%

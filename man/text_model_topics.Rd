@@ -4,11 +4,23 @@
 \alias{text_model_topics}
 \title{Apply the topic mode to a new corpus of documents.}
 \usage{
-text_model_topics(dtm, topic_nbr = 0, prevalence = NULL,
-  content = NULL, init.type = "Spectral", seed = 1234,
-  iterations = 50, tolerance = 0, keywords = NULL,
-  baselab = "prob", frexweight = 0.6, min_gamma = 0.1,
-  min_beta = 0.01, min_common = 1, verbose = TRUE)
+text_model_topics(
+  dtm,
+  topic_nbr = 0,
+  prevalence = NULL,
+  content = NULL,
+  init.type = "Spectral",
+  seed = 1234,
+  iterations = 50,
+  tolerance = 0,
+  keywords = NULL,
+  baselab = "prob",
+  frexweight = 0.6,
+  min_gamma = 0.1,
+  min_beta = 0.01,
+  min_common = 1,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dtm}{dtm.}

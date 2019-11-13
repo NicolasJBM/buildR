@@ -10,6 +10,7 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr summarise_all
 #' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr mutate
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr left_join
@@ -38,6 +39,7 @@ faultlines_fls <- function(x, subgroup){
     nest() %>%
     mutate(data = map(data, fls_ia)) %>%
     unnest(data) %>%
+    ungroup() %>%
     mutate(subgroup = paste("FLS_IA", subgroup, sep="_")) %>%
     spread(subgroup, data)
   

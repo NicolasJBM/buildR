@@ -4,8 +4,13 @@
 \alias{text_clean}
 \title{Remove html tags, remove double spaces, convert to ASCII.}
 \usage{
-text_clean(text, clndash = TRUE, clnpunct = TRUE, clnascii = TRUE,
-  clnspc = TRUE)
+text_clean(
+  text,
+  clndash = TRUE,
+  clnpunct = TRUE,
+  clnascii = TRUE,
+  clnspc = TRUE
+)
 }
 \arguments{
 \item{text}{character. String to be cleaned.}
