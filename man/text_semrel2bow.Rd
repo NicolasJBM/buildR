@@ -4,11 +4,8 @@
 \alias{text_semrel2bow}
 \title{Extract bags of words from semating relationships.}
 \usage{
-text_semrel2bow(
-  semrel,
-  basis = "lemma",
-  keep_pos = c("NOUN", "PROPN", "ADJ", "VERB", "ADV")
-)
+text_semrel2bow(semrel, basis = "lemma", keep_pos = c("NOUN", "PROPN",
+  "ADJ", "VERB", "ADV"))
 }
 \arguments{
 \item{semrel}{Tibble. Semantic for one document relationships as returned by text_txt2semrel.}

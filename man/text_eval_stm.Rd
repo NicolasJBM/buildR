@@ -4,20 +4,10 @@
 \alias{text_eval_stm}
 \title{Return various metrics to evaluate topic model performance for different topic numbers.}
 \usage{
-text_eval_stm(
-  dtm = NA,
-  topic_nbr = 0,
-  prevalence = NULL,
-  content = NULL,
-  init.type = "Spectral",
-  seed = 1,
-  iterations = 50,
-  tolerance = 0,
-  keywords = NULL,
-  min_gamma = 0.1,
-  min_beta = 0.01,
-  min_common = 1
-)
+text_eval_stm(dtm = NA, topic_nbr = 0, prevalence = NULL,
+  content = NULL, init.type = "Spectral", seed = 1,
+  iterations = 50, tolerance = 0, keywords = NULL, min_gamma = 0.1,
+  min_beta = 0.01, min_common = 1)
 }
 \arguments{
 \item{dtm}{dtm.}

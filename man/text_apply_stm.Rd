@@ -4,13 +4,8 @@
 \alias{text_apply_stm}
 \title{Apply the topic mode to a new corpus of documents.}
 \usage{
-text_apply_stm(
-  bow,
-  topic_model,
-  keywords = NULL,
-  min_gamma = 0.1,
-  min_common = 1
-)
+text_apply_stm(bow, topic_model, keywords = NULL, min_gamma = 0.1,
+  min_common = 1)
 }
 \arguments{
 \item{bow}{Tibble. Bag of words as returned by the function text_semrel2bow.}

@@ -4,16 +4,8 @@
 \alias{text_bow2dtm}
 \title{Transform the bags of words into a document to term matrix/}
 \usage{
-text_bow2dtm(
-  bow,
-  min_term = 0,
-  max_term = Inf,
-  min_doc = 0,
-  max_doc = Inf,
-  nbterm = 1000,
-  keep_terms = NULL,
-  docvar = NULL
-)
+text_bow2dtm(bow, min_term = 0, max_term = Inf, min_doc = 0,
+  max_doc = Inf, nbterm = 1000, keep_terms = NULL, docvar = NULL)
 }
 \arguments{
 \item{bow}{Tibble. Output of the function text_bow_metrics. Document ids must be in a variable called "document".}

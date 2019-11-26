@@ -4,18 +4,10 @@
 \alias{net_list2dynamic}
 \title{Add Jaccard coefficients to the edges of a tidygraph.}
 \usage{
-net_list2dynamic(
-  graphlist,
-  periodvar = "period",
-  graphvar = "graph",
-  node_weight = NULL,
-  node_com = NULL,
-  edge_weight = NULL,
-  lscale = 0.05,
-  vscale = 0.05,
-  escale = 0.05,
-  colors = c("red", "blue", "green", "orange", "purple", "darkgreen", "darkred")
-)
+net_list2dynamic(graphlist, periodvar = "period", graphvar = "graph",
+  node_weight = NULL, node_com = NULL, edge_weight = NULL,
+  lscale = 0.05, vscale = 0.05, escale = 0.05, colors = c("red",
+  "blue", "green", "orange", "purple", "darkgreen", "darkred"))
 }
 \arguments{
 \item{graphlist}{Tibble. One column must contain the "period" and another should contain the "graph"}

@@ -4,7 +4,8 @@
 \alias{text_bow_metrics}
 \title{Compute basic metrics for a bag of words.}
 \usage{
-text_bow_metrics(bow, document = "document", term = "term", count = "count")
+text_bow_metrics(bow, document = "document", term = "term",
+  count = "count")
 }
 \arguments{
 \item{bow}{tibble. Bag of words produced with text_semrel2bow}

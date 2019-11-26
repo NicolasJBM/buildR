@@ -4,12 +4,8 @@
 \alias{net_metrics_nodedge}
 \title{Add Jaccard coefficients to the edges of a tidygraph.}
 \usage{
-net_metrics_nodedge(
-  graph,
-  directed = TRUE,
-  weight_var = NULL,
-  optimal_com = FALSE
-)
+net_metrics_nodedge(graph, directed = TRUE, weight_var = NULL,
+  optimal_com = FALSE)
 }
 \arguments{
 \item{graph}{Tidygraph.}
