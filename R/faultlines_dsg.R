@@ -10,6 +10,7 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr arrange
 #' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr desc
 #' @importFrom dplyr mutate
 #' @importFrom dplyr mutate_if
@@ -32,8 +33,8 @@ faultlines_dsg <- function(x, subgroup){
   attribute <- NULL
   
   x <- x %>%
-    dplyr::select(subgroup = subgroup, everything()) %>%
-    mutate_if(is.factor, function(x) as.integer(as.character(x)))
+    dplyr::select(subgroup = subgroup, dplyr::everything()) %>%
+    dplyr::mutate_if(is.factor, function(x) as.integer(as.character(x)))
   
   #Compute basic headcounts
   nbr <- nrow(x)
@@ -50,63 +51,63 @@ faultlines_dsg <- function(x, subgroup){
   
   #Compute distances in terms of number of attributes
   distances <- x %>%
-    arrange(desc(subgroup)) %>%
+    dplyr::arrange(desc(subgroup)) %>%
     dplyr::select(-subgroup) %>%
-    gather(attribute, value) %>%
-    group_by(attribute) %>%
-    nest() %>%
-    mutate(data = map(data, dist, method = "manhattan")) %>%
-    mutate(data = map(data, as.matrix)) %>%
-    mutate(data = map(data, as.data.frame))
+    tidyr::gather(attribute, value) %>%
+    dplyr::group_by(attribute) %>%
+    tidyr::nest() %>%
+    dplyr::mutate(data = purrr::map(data, dist, method = "manhattan")) %>%
+    dplyr::mutate(data = purrr::map(data, as.matrix)) %>%
+    dplyr::mutate(data = purrr::map(data, as.data.frame))
   
   # Compute scores
   if (nbrSGP1 == 0){
     proximities <- distances %>%
-      mutate(
+      dplyr::mutate(
         DSG_IA_1 = NA,
         DSG_IA_0 = map(data, comp_proxim, type = "within"),
         DSG_CGA = NA
       ) %>%
       dplyr::select(-data) %>%
-      unnest(DSG_IA_0) %>%
-      mutate(DSG_IA = DSG_IA_0) %>%
-      mutate(DSG = NA)
+      tidyr::unnest(DSG_IA_0) %>%
+      dplyr::mutate(DSG_IA = DSG_IA_0) %>%
+      dplyr::mutate(DSG = NA)
   } else if (nbrSGP0 == 0){
     proximities <- distances %>%
-      mutate(
+      dplyr::mutate(
         DSG_IA_1 = map(data, comp_proxim, type = "within"),
         DSG_IA_0 = NA,
         DSG_CGA = NA
       ) %>%
       dplyr::select(-data) %>%
-      unnest(DSG_IA_1) %>%
-      mutate(DSG_IA = DSG_IA_1) %>%
-      mutate(DSG = NA)
+      tidyr::unnest(DSG_IA_1) %>%
+      dplyr::mutate(DSG_IA = DSG_IA_1) %>%
+      dplyr::mutate(DSG = NA)
   } else{
     proximities <- distances %>%
       mutate(
-        DSG_IA_1 = map(data, dplyr::select, 1:nbrSGP1),
-        DSG_IA_0 = map(data, dplyr::select, (nbrSGP1+1):nbr),
-        DSG_CGA = map(data, dplyr::select, (nbrSGP1+1):nbr)
+        DSG_IA_1 = purrr::map(data, dplyr::select, 1:nbrSGP1),
+        DSG_IA_0 = purrr::map(data, dplyr::select, (nbrSGP1+1):nbr),
+        DSG_CGA = purrr::map(data, dplyr::select, (nbrSGP1+1):nbr)
       ) %>%
-      mutate(
-        DSG_IA_1 = map(DSG_IA_1, slice, 1:nbrSGP1),
-        DSG_IA_0 = map(DSG_IA_0, slice, (nbrSGP1+1):nbr),
-        DSG_CGA = map(DSG_CGA, slice, 1:nbrSGP1)
+      dplyr::mutate(
+        DSG_IA_1 = purrr::map(DSG_IA_1, slice, 1:nbrSGP1),
+        DSG_IA_0 = purrr::map(DSG_IA_0, slice, (nbrSGP1+1):nbr),
+        DSG_CGA = purrr::map(DSG_CGA, slice, 1:nbrSGP1)
       ) %>%
-      mutate(
-        DSG_IA_1 = map(DSG_IA_1, comp_proxim, type = "within"),
-        DSG_IA_0 = map(DSG_IA_0, comp_proxim, type = "within"),
-        DSG_CGA = map(DSG_CGA, comp_proxim, type = "CGA")
+      dplyr::mutate(
+        DSG_IA_1 = purrr::map(DSG_IA_1, comp_proxim, type = "within"),
+        DSG_IA_0 = purrr::map(DSG_IA_0, comp_proxim, type = "within"),
+        DSG_CGA = purrr::map(DSG_CGA, comp_proxim, type = "CGA")
       ) %>%
       dplyr::select(-data) %>%
-      unnest(DSG_IA_1, DSG_IA_0, DSG_CGA) %>%
-      mutate(DSG_IA = DSG_IA_0/2 + DSG_IA_1/2) %>%
-      mutate(DSG = DSG_IA * (1-DSG_CGA))
+      tidyr::unnest(c(DSG_IA_1, DSG_IA_0, DSG_CGA)) %>%
+      dplyr::mutate(DSG_IA = DSG_IA_0/2 + DSG_IA_1/2) %>%
+      dplyr::mutate(DSG = DSG_IA * (1-DSG_CGA))
   }
   
   # Gather and return results
-  results <- proximities
+  results <- dplyr::ungroup(proximities)
   return(results)
   
 }
