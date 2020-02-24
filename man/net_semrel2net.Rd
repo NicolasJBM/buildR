@@ -4,8 +4,13 @@
 \alias{net_semrel2net}
 \title{Make an tidygraph from a list of semantic relationships as returned by text_txt2semrel.}
 \usage{
-net_semrel2net(semrel, basis = "lemma", keep_pos = c("NOUN", "PROPN",
-  "ADJ", "VERB", "ADV"), multiplex = FALSE, min_count = 1)
+net_semrel2net(
+  semrel,
+  basis = "lemma",
+  keep_pos = c("NOUN", "PROPN", "ADJ", "VERB", "ADV"),
+  multiplex = FALSE,
+  min_count = 1
+)
 }
 \arguments{
 \item{semrel}{Tibble. Output of the function text_txt2semrel}
