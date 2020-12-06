@@ -13,6 +13,7 @@
 #' @importFrom dplyr ungroup
 #' @importFrom dplyr mutate
 #' @importFrom dplyr %>%
+#' @importFrom dplyr n
 #' @importFrom tidyr unnest
 #' @importFrom tidyr spread
 #' @importFrom tidyr gather

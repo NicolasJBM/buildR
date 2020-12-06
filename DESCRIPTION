@@ -1,7 +1,7 @@
 Package: buildR
 Title: Data Preparation
 Version: 1.1
-Date: 2019-08-26
+Date: 2020-12-06
 Authors@R: 
     person(given = "Nicolas",
            family = "Mangin",
@@ -14,44 +14,22 @@ LazyData: true
 License: GPL-3 | file LICENSE
 Depends: R (>= 3.6)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Imports:
     knitr,
-    readr,
     dplyr,
-    miniUI,
-    shiny,
     tidyr,
-    tibble,
     purrr,
-    udpipe,
-    stringr,
-    stringi,
-    textclean,
-    tm,
-    stats,
-    tidygraph,
-    psych,
-    tidytext,
-    topicmodels,
-    stm,
     forcats,
+    stats,
+    tibble,
     gtools,
     igraph,
-    network,
-    ndtv,
-    networkDynamic,
-    foreach,
-    snow,
-    doSNOW,
-    koRpus,
-    koRpus.lang.en,
+    tidygraph,
     intergraph,
-    broom,
-    fuzzyjoin,
-    htmlwidgets,
-    rhandsontable,
-    shinythemes,
-    data.table,
-    rlang
+    networkDynamic,
+    ndtv,
+    network,
+    grDevices,
+    stringr
