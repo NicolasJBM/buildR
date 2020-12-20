@@ -1,7 +1,7 @@
 Package: buildR
 Title: Data Preparation
 Version: 1.1
-Date: 2020-12-06
+Date: 2020-12-20
 Authors@R: 
     person(given = "Nicolas",
            family = "Mangin",
