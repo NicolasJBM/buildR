@@ -15,7 +15,6 @@
 
 
 net_compute_overlap <- function(graph) {
-  
   from <- NULL
   to <- NULL
   occ_from <- NULL

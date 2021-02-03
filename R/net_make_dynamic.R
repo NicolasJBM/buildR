@@ -42,8 +42,7 @@ net_make_dynamic <- function(
                              colors = c(
                                "red", "blue", "green", "orange",
                                "purple", "darkgreen", "darkred"
-                               )
-                             ) {
+                             )) {
   stopifnot(
     periodvar %in% names(graphlist),
     graphvar %in% names(graphlist),

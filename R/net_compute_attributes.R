@@ -31,23 +31,21 @@
 #' @export
 
 net_compute_attributes <- function(
-  graph,
-  directed = TRUE,
-  weight_var = NULL,
-  optimal_com = FALSE
-){
-  
+                                   graph,
+                                   directed = TRUE,
+                                   weight_var = NULL,
+                                   optimal_com = FALSE) {
   component <- NULL
-  
+
   graph <- graph %>%
     tidygraph::activate("edges") %>%
     dplyr::mutate(
       reciprocity = tidygraph::edge_is_mutual(),
-      betweenness = tidygraph::centrality_edge_betweenness() 
+      betweenness = tidygraph::centrality_edge_betweenness()
     ) %>%
     tidygraph::activate("nodes")
-  
-  if (directed){
+
+  if (directed) {
     graph <- graph %>%
       tidygraph::to_directed() %>%
       dplyr::mutate(
@@ -66,14 +64,14 @@ net_compute_attributes <- function(
       tidygraph::morph(to_subgraph, subset_by = "nodes", component == 1) %>%
       dplyr::mutate(cent_closeness = tidygraph::centrality_closeness()) %>%
       tidygraph::unmorph()
-    
-    if (optimal_com){
+
+    if (optimal_com) {
       graph <- graph %>%
         dplyr::mutate(com_optimal = as.factor(tidygraph::group_optimal()))
     }
-    
-    if (!is.null(weight_var)){
-      graph <- graph  %>%
+
+    if (!is.null(weight_var)) {
+      graph <- graph %>%
         dplyr::mutate(
           cent_betweenness_w = tidygraph::centrality_betweenness(weights = get(weight_var)),
           cent_alpha_w = tidygraph::centrality_alpha(weights = get(weight_var)),
@@ -86,14 +84,12 @@ net_compute_attributes <- function(
         tidygraph::morph(to_subgraph, subset_by = "nodes", component == 1) %>%
         dplyr::mutate(cent_closeness_w = tidygraph::centrality_closeness(weights = get(weight_var))) %>%
         tidygraph::unmorph()
-      
-      if (optimal_com){
+
+      if (optimal_com) {
         graph <- graph %>%
           dplyr::mutate(com_optimal_w = as.factor(tidygraph::group_optimal(weights = get(weight_var))))
       }
-      
     }
-    
   } else {
     graph <- graph %>%
       tidygraph::to_undirected() %>%
@@ -114,14 +110,14 @@ net_compute_attributes <- function(
       tidygraph::morph(to_subgraph, subset_by = "nodes", component == 1) %>%
       dplyr::mutate(cent_closeness = tidygraph::centrality_closeness()) %>%
       tidygraph::unmorph()
-    
-    if (optimal_com){
+
+    if (optimal_com) {
       graph <- graph %>%
         dplyr::mutate(com_optimal = as.factor(tidygraph::group_optimal()))
     }
-    
-    if (!is.null(weight_var)){
-      graph <- graph  %>%
+
+    if (!is.null(weight_var)) {
+      graph <- graph %>%
         dplyr::mutate(
           cent_betweenness_w = tidygraph::centrality_betweenness(weights = get(weight_var)),
           cent_alpha_w = tidygraph::centrality_alpha(weights = get(weight_var)),
@@ -133,13 +129,13 @@ net_compute_attributes <- function(
         tidygraph::morph(to_subgraph, subset_by = "nodes", component == 1) %>%
         dplyr::mutate(cent_closeness_w = tidygraph::centrality_closeness(weights = get(weight_var))) %>%
         tidygraph::unmorph()
-      
-      if (optimal_com){
+
+      if (optimal_com) {
         graph <- graph %>%
           dplyr::mutate(com_optimal_w = as.factor(tidygraph::group_optimal(weights = get(weight_var))))
       }
     }
   }
-  
+
   return(graph)
 }

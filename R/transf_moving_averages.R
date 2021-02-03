@@ -8,11 +8,10 @@
 #' @export
 
 transf_moving_averages <- function(x, range) {
-  
   stopifnot(
-    length(x >= (2+range))
+    length(x >= (2 + range))
   )
-  
+
   y <- x
   for (i in seq_len(length(y))) {
     if (i <= range) before <- range - i else before <- range

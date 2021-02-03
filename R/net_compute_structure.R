@@ -3,7 +3,7 @@
 #' @author Nicolas Mangin
 #' @description Compute metrics describing the structure of a network
 #' @param graph    Tidygraph.
-#' @param subgroup Character. Name of the variable containing the community of the nodes in each graph. 
+#' @param subgroup Character. Name of the variable containing the community of the nodes in each graph.
 #' @return A tibble with network structure metrics for the graph.
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter
@@ -48,20 +48,19 @@
 #' @export
 
 
-net_compute_structure <- function(graph, subgroup){
-  
+net_compute_structure <- function(graph, subgroup) {
   component <- NULL
   community <- NULL
   graph_possible_edges <- NULL
-  
+
   g <- graph %>%
     tidygraph::activate("nodes") %>%
     dplyr::filter(component == 1) %>%
     igraph::as.igraph()
-  
+
   dyads <- igraph::dyad_census(g)
   triads <- igraph::triad_census(g)
-  
+
   structure <- graph %>%
     tidygraph::activate("nodes") %>%
     dplyr::mutate(
@@ -89,18 +88,18 @@ net_compute_structure <- function(graph, subgroup){
     ) %>%
     tidygraph::unmorph() %>%
     dplyr::mutate(
-      graph_possible_edges = length(igraph::V(g)) * (length(igraph::V(g))-1),
+      graph_possible_edges = length(igraph::V(g)) * (length(igraph::V(g)) - 1),
       graph_triads_potential = triads[[1]],
       graph_triads_cut = triads[[2]] + triads[[3]],
       graph_triads_line =
         triads[[4]] + triads[[5]] + triads[[6]] +
-        triads[[7]] + triads[[8]] + triads[[11]],
+          triads[[7]] + triads[[8]] + triads[[11]],
       graph_triads_partial =
         triads[[15]] + triads[[14]] + triads[[13]] +
-        triads[[12]] + triads[[9]] + triads[[10]],
+          triads[[12]] + triads[[9]] + triads[[10]],
       graph_triads_full = triads[[16]],
-      graph_density_ties = (2 * dyads$mut + dyads$asym)/ graph_possible_edges,
-      graph_density_pairs = (dyads$mut*2 + dyads$asym) / graph_size,
+      graph_density_ties = (2 * dyads$mut + dyads$asym) / graph_possible_edges,
+      graph_density_pairs = (dyads$mut * 2 + dyads$asym) / graph_size,
       graph_central_between =
         igraph::centralization.betweenness(g)$centralization,
       graph_central_degree =
@@ -130,6 +129,6 @@ net_compute_structure <- function(graph, subgroup){
       com_mean_dist = tidygraph::graph_mean_dist()
     ) %>%
     tidygraph::unmorph()
-  
+
   return(structure)
 }

@@ -6,13 +6,16 @@
 #' @return A vector of same class without missing values.
 #' @export
 
-transf_impute_missing <- function(x){
+transf_impute_missing <- function(x) {
   type <- class(x)
   if (type == "factor" | type == "character") {
     imputation <- names(which.max(table(x)))
-  } else imputation <- mean(x, na.rm = TRUE)
-  
-  if (sum(is.na(x)) < length(x))
+  } else {
+    imputation <- mean(x, na.rm = TRUE)
+  }
+
+  if (sum(is.na(x)) < length(x)) {
     x <- replace(x, is.na(x), imputation)
+  }
   return(x)
 }

@@ -46,8 +46,11 @@ faultlines_dsg <- function(x, subgroup) {
 
   # Prepare computation of proximities
   comp_proxim <- function(x, type = "within") {
-    if (type == "within")
-      maximum <- nbrAttr^2 - nbrAttr else maximum <- nbrAttr * nbrObs
+    if (type == "within") {
+      maximum <- nbrAttr^2 - nbrAttr
+    } else {
+      maximum <- nbrAttr * nbrObs
+    }
     if (maximum == 0) maximum <- 1
     1 - sum(x) / maximum
   }

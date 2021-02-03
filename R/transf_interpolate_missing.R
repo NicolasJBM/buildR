@@ -13,15 +13,14 @@
 #' @export
 
 
-transf_interpolate_missing <- function(x, range){
-  
+transf_interpolate_missing <- function(x, range) {
   stopifnot(
-    length(x >= (2+range))
+    length(x >= (2 + range))
   )
-  
+
   y <- x
   for (i in seq_len(length(y))) {
-    if (is.na(y[i])){
+    if (is.na(y[i])) {
       if (i <= range) before <- range - i else before <- range
       if (i >= (length(y) - range)) after <- length(y) - i else after <- range
       xmin <- i - before
