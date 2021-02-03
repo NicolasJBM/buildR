@@ -4,3 +4,4 @@
 ^README\.md$
 ^pkgdown$
 ^docs$
+^\.github$

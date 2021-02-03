@@ -1,5 +1,5 @@
 Package: buildR
-Title: Toolbox for Data Transformation
+Title: Toolbox to prepare data and build constructs
 Version: 0.1.0
 Date: 2020-12-25
 Authors@R: 

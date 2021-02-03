@@ -3,6 +3,13 @@ output: github_document
 ---
 
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/NicolasJBM/buildR/workflows/R-CMD-check/badge.svg)](https://github.com/NicolasJBM/buildR/actions)
+[![CodeFactor](https://www.codefactor.io/repository/github/nicolasjbm/buildr/badge)](https://www.codefactor.io/repository/github/nicolasjbm/buildr)
+[![License: GPL3](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
@@ -12,47 +19,46 @@ knitr::opts_chunk$set(
 )
 ```
 
-# bibliogR <img src="man/figures/logo.svg" align="right" width="120" />
+# buildR <img src="man/figures/logo.svg" align="right" width="120" />
 
-Searching and Citing the Literature.
+Toolbox to prepare data and build constructs.
 
 
 
 ## Overview
 
-
+The *buildR* package gathers several functions to create specific constructs (like faultlines), create and manipulate networks, transform data, and compute aggregates.  
 
 
 ## Installation
 
-Before you can install *bibliogR* itself, you will also need to install from CRAN the following R packages:  
+Before you can install *buildR* itself, you will need to install from CRAN the following packages:  
 
 ```{r, eval = FALSE}
-install.packages("knitr")
-install.packages("dplyr")
-install.packages("tibble")
-install.packages("stats")
+install.packages(c(knitr,
+  "stats", "snow", "doSNOW", "utils", "foreach", "purrr", "tidyr",
+  "dplyr", "forcats", "tibble", "tidygraph", "igraph", "gtools",
+  "stringr", "intergraph", "networkDynamic", "ndtv", "network"
+  ), dependencies = TRUE)
 ```
 
-Since the package uses some functions from the *lexR* package to clean text (i.e. to force ASCII format t oexport to .bib files), you will need to install it first:  
+Then, install *buildR* from its GitHub public repository:  
 
 ```{r, eval = FALSE}
-devtools::install.github("NicolasJBM/lexR")
+devtools::install.github("NicolasJBM/buildR")
 ```
-
-Then, install *biliogR* from its GitHub public repository:  
-
-```{r, eval = FALSE}
-devtools::install.github("NicolasJBM/fmtR")
-```
-
 
 
 ## Usage
 
+Since the functions included in this packages can be grouped in families or processes, their use is described in dedicated vignettes:  
 
+- Transforming or aggregating variables;
+- Studying networks;
+- Computing faultlines.
 
 
 ## Toolboxes
 
-*bibliogR* requires *[lexR](https://github.com/NicolasJBM/lexR)* ans is particularly useful in combination with *[writR](https://github.com/NicolasJBM/writR)*.
+*buildR* is necessary to run *[modlR](https://github.com/NicolasJBM/modlR)* which uses its *boostr* function.
+

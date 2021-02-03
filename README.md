@@ -1,0 +1,54 @@
+
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/NicolasJBM/buildR/workflows/R-CMD-check/badge.svg)](https://github.com/NicolasJBM/buildR/actions)
+[![CodeFactor](https://www.codefactor.io/repository/github/nicolasjbm/buildr/badge)](https://www.codefactor.io/repository/github/nicolasjbm/buildr)
+[![License:
+GPL3](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
+# buildR <img src="man/figures/logo.svg" align="right" width="120" />
+
+Toolbox to prepare data and build constructs.
+
+## Overview
+
+The *buildR* package gathers several functions to create specific
+constructs (like faultlines), create and manipulate networks, transform
+data, and compute aggregates.
+
+## Installation
+
+Before you can install *buildR* itself, you will need to install from
+CRAN the following packages:
+
+``` r
+install.packages(c(knitr,
+  "stats", "snow", "doSNOW", "utils", "foreach", "purrr", "tidyr",
+  "dplyr", "forcats", "tibble", "tidygraph", "igraph", "gtools",
+  "stringr", "intergraph", "networkDynamic", "ndtv", "network"
+  ), dependencies = TRUE)
+```
+
+Then, install *buildR* from its GitHub public repository:
+
+``` r
+devtools::install.github("NicolasJBM/buildR")
+```
+
+## Usage
+
+Since the functions included in this packages can be grouped in families
+or processes, their use is described in dedicated vignettes:
+
+-   Transforming or aggregating variables;
+-   Studying networks;
+-   Computing faultlines.
+
+## Toolboxes
+
+*buildR* is necessary to run
+*[modlR](https://github.com/NicolasJBM/modlR)* which uses its *boostr*
+function.
