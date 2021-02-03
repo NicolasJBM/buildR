@@ -1,7 +1,10 @@
-#' Make all the numeric variables of a dataframe discrete with the specified number of categories according to different algorithms (split based on quantiles or kmeans). The kmeans is chosen and if minimum differences are provided, differences inferior to the thresholds will be disregarded.
-#' @param x dataframe. database in which all numeric values have to be discretized.
-#' @param ncat integer. The number of discrete values desired for each variable (ncat = 2 makes binary variables).
-#' @param method character. Specify whether the variables should be discretized using quantiles ("qt") or kmeans ("km")
+#' @name transf_discretize
+#' @title Transform a continuous variable into a discrete one
+#' @author Nicolas Mangin
+#' @description  Transform a continuous variable into a discrete one.
+#' @param x      Numeric. Vector of values to be transformed into a discrete ordinal variable.
+#' @param method character. Specify whether the variables should be discretized using quantiles ("quantiles") or kmeans ("kmeans")
+#' @param nval   Integer. Number of discrete values desired for each variable (groups = 2 makes binary variables).
 #' @return A dataframe where all variables are discrete.
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr %>%
@@ -16,46 +19,27 @@
 #' @export
 
 
-tble_discretize <- function(x, ncat = 2, method = "km"){
-  if (method == "km"){
-    x <- mutate_if(x, is.numeric, kmeans_split, ncat = ncat)
+transf_discretize <- function(x, method = "quantiles", nval = 2) {
+  stopifnot(
+    is.numeric(x),
+    is.integer(nval),
+    method %in% c("quantiles", "kmeans")
+  )
+
+  if (method == "kmeans") {
+    nval <- min((length(unique(x)) - 1), nval)
+    if (nval > 0) {
+      y <- as.numeric(stats::kmeans(x, centers = nval)$cluster) - 1
+    } else {
+      y <- rep(0, length(x))
+    }
   } else {
-    x <- mutate_if(x, is.numeric, quantile_split, ncat = ncat)
+    breaks <- c()
+    for (i in 1:(nval - 1)) breaks[i] <- stats::quantile(x, i / nval)
+    breaks <- c(min(x) - 1, breaks, max(x) + 1)
+    y <- cut(x, breaks = breaks) %>%
+      as.numeric()
+    y <- y - 1
   }
-  return(x)
+  return(y)
 }
-
-
-kmeans_split <- function(x, ncat) {
-  
-  ncat <- min((length(unique(x))-1), ncat)
-  
-  if (ncat > 0){
-    
-    tmp1 <- data.frame(x = x, newx = as.numeric(kmeans(x, centers = ncat)$cluster))
-    
-    tmp2 <- tmp1 %>%
-      group_by(newx) %>%
-      summarise(mean = mean(x)) %>%
-      mutate(mean = ntile(mean, ncat)) %>%
-      right_join(tmp1, by = "newx")
-    
-    newx <- tmp2$mean - 1
-    
-  } else newx <- rep(0, length(x))
-  
-  return(newx)
-}
-
-
-quantile_split <- function(x, ncat) {
-  
-  breaks <- c()
-  for (i in 1:(ncat-1)) breaks[i] <- quantile(x, i/ncat)
-  breaks <- c(min(x)-1, breaks, max(x)+1)
-  x <- cut(x, breaks = breaks) %>%
-    as.numeric()
-  x - 1
-  
-}
-

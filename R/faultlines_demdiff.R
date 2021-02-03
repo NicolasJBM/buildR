@@ -1,4 +1,7 @@
-#' Compute a score of demographic difference using the procedure suggested by Li and Hambrick (2005) for the study of faultlines.
+#' @name faultlines_demdiff
+#' @title Compute demographic difference between subgroups
+#' @author Nicolas Mangin
+#' @description Compute a score of demographic difference using the procedure suggested by Li and Hambrick (2005) for the study of faultlines.
 #' @param x dataframe. Table informing about team members' characteristics (all team members should belong to the same team), numeric or binary. Ideally, all values should be scaled between 0 and 1 before running the analysis.
 #' @param subgroup character. Name of the variable indicating subgroups memberships.
 #' @return A dataframe with one row (for the whole group) containing the index of demographic difference (DemDiff).
@@ -14,70 +17,83 @@
 #' @importFrom dplyr mutate
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr left_join
-#' @importFrom tidyr gather
-#' @importFrom tidyr spread
+#' @importFrom tidyr pivot_longer
+#' @importFrom tidyr pivot_wider
 #' @export
 
-faultlines_demdiff <- function(x, subgroup){
-  
+faultlines_demdiff <- function(x, subgroup) {
+
   # bind variables
   attribute <- NULL
-  meanGp <- NULL
-  meanSubGp <- NULL
   gp0 <- NULL
   gp1 <- NULL
-  sd <- NULL
-  sdSubGp <- NULL
   diffMean <- NULL
   prodSD <- NULL
-  
+
   x <- x %>%
-    dplyr::select(subgroup = subgroup, everything()) %>%
-    mutate_if(is.factor, function(x) as.integer(as.character(x)))
-  
+    dplyr::select(subgroup = subgroup, dplyr::everything()) %>%
+    dplyr::mutate_if(is.factor, function(x) as.integer(as.character(x)))
+
   # Find the average values for each variable
   center <- x %>%
-    summarise_all(mean) %>%
-    gather(attribute, meanGp)
-  
+    dplyr::summarise_all(mean) %>%
+    tidyr::pivot_longer(names_to = "attribute", values_to = "meanGp")
+
   # Find for each variable the centroid of each group
   centroids <- x %>%
-    group_by(subgroup) %>%
-    summarise_all(mean) %>%
-    ungroup() %>%
-    gather(attribute, meanSubGp, -subgroup)
-  
+    dplyr::group_by(subgroup) %>%
+    dplyr::summarise_all(mean) %>%
+    dplyr::ungroup() %>%
+    tidyr::pivot_longer(
+      cols = setdiff(names(x), "subgroup"),
+      names_to = "attribute",
+      values_to = "meanSubGp"
+    )
+
   # Compute de Demographic Difference index of Li and Hambrick
-  if (length(unique(centroids$subgroup)) > 1){
-    
-    #Compute the distances between subgroup centroids for each variable
+  if (length(unique(centroids$subgroup)) > 1) {
+
+    # Compute the distances between subgroup centroids for each variable
     centroidsMeanDiff <- centroids %>%
-      mutate(subgroup = paste0("gp", subgroup)) %>%
-      spread(subgroup, meanSubGp, fill = NA) %>%
-      mutate(diff = (gp0-gp1)^2) %>%
+      dplyr::mutate(subgroup = paste0("gp", subgroup)) %>%
+      tidyr::pivot_wider(
+        names_from = "subgroup",
+        values_from = "meanSubGp",
+        values_fill = NA
+      ) %>%
+      dplyr::mutate(diff = (gp0 - gp1)^2) %>%
       dplyr::select(attribute, diffMean = diff)
-    
-    # Compute within subgroup standard deviations on each attribute and compute the demographic distance
+
+    # Compute within subgroup standard deviations on each attribute and
+    # compute the demographic distance
     dem_diff <- x %>%
-      group_by(subgroup) %>%
-      summarise_all(stats::sd) %>%
-      ungroup() %>%
-      gather(attribute, sdSubGp, -subgroup) %>%
-      mutate(subgroup = paste0("gp", subgroup)) %>%
-      spread(subgroup, sdSubGp, fill = 0) %>%
-      mutate(prod = ((gp0*gp1)/2)+1) %>%
+      dplyr::group_by(subgroup) %>%
+      dplyr::summarise_all(stats::sd) %>%
+      dplyr::ungroup() %>%
+      tidyr::pivot_longer(
+        cols = setdiff(names(x), "subgroup"),
+        names_to = "attribute",
+        values_to = "sdSubGp"
+      ) %>%
+      dplyr::mutate(subgroup = paste0("gp", subgroup)) %>%
+      tidyr::pivot_wider(
+        names_from = "subgroup",
+        values_from = "sdSubGp",
+        values_fill = 0
+      ) %>%
+      dplyr::mutate(prod = ((gp0 * gp1) / 2) + 1) %>%
       dplyr::select(attribute, prodSD = prod) %>%
-      left_join(centroidsMeanDiff, by = "attribute") %>%
-      mutate(dem_diff = diffMean / prodSD) %>%
+      dplyr::left_join(centroidsMeanDiff, by = "attribute") %>%
+      dplyr::mutate(dem_diff = diffMean / prodSD) %>%
       dplyr::select(dem_diff) %>%
       colMeans() %>%
       as.vector()
-    
-  } else dem_diff <- as.vector(NA)
+  } else {
+    dem_diff <- as.vector(NA)
+  }
   names(dem_diff) <- c("DemDiff")
-  
+
   results <- data.frame(as.list(c(dem_diff)))
-  
+
   return(results)
-  
 }

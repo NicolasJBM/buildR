@@ -2,7 +2,7 @@
 % Please edit documentation in R/faultlines_fls.R
 \name{faultlines_fls}
 \alias{faultlines_fls}
-\title{Computes the distances within and between sub-groups according to the procedure designed by Shaw (2004) for faultline analyses.}
+\title{Compute faultline scores between subgroups}
 \usage{
 faultlines_fls(x, subgroup)
 }
@@ -24,4 +24,7 @@ Shaw, J. B. 2004. The Development and Analysis of a Measure of Group Faultlines.
 make_discrete
 
 find_subgroups
+}
+\author{
+Nicolas Mangin
 }

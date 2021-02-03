@@ -2,7 +2,7 @@
 % Please edit documentation in R/net_aggredge.R
 \name{net_aggredge}
 \alias{net_aggredge}
-\title{Aggregate edges according to speciffications.}
+\title{Aggregate edges}
 \usage{
 net_aggredge(edgelist, mode = "rolling", step = 1, range = 1)
 }
@@ -19,5 +19,8 @@ net_aggredge(edgelist, mode = "rolling", step = 1, range = 1)
 An aggregated edgelist.
 }
 \description{
-Aggregate edges according to speciffications.
+Aggregate edges according to specifications.
+}
+\author{
+Nicolas Mangin
 }

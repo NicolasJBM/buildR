@@ -2,7 +2,7 @@
 % Please edit documentation in R/faultlines_demdiff.R
 \name{faultlines_demdiff}
 \alias{faultlines_demdiff}
-\title{Compute a score of demographic difference using the procedure suggested by Li and Hambrick (2005) for the study of faultlines.}
+\title{Compute demographic difference between subgroups}
 \usage{
 faultlines_demdiff(x, subgroup)
 }
@@ -24,4 +24,7 @@ Li, J., and D. C. Hambrick. 2005. Factional groups: A new vantage on demographic
 make_0_to_1
 
 find_subgroups
+}
+\author{
+Nicolas Mangin
 }

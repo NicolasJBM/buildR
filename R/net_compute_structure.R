@@ -1,6 +1,9 @@
-#' Aggregate edges according to speciffications.
-#' @param graph Tidygraph.
-#' @param node_com    Character. Name of the variable containing the community of the nodes in each graph. 
+#' @name net_compute_structure
+#' @title Compute structural metrics for a network
+#' @author Nicolas Mangin
+#' @description Compute metrics describing the structure of a network
+#' @param graph    Tidygraph.
+#' @param subgroup Character. Name of the variable containing the community of the nodes in each graph. 
 #' @return A tibble with network structure metrics for the graph.
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter
@@ -45,7 +48,7 @@
 #' @export
 
 
-net_metrics_structure <- function(graph, node_com){
+net_compute_structure <- function(graph, subgroup){
   
   component <- NULL
   community <- NULL
@@ -62,7 +65,7 @@ net_metrics_structure <- function(graph, node_com){
   structure <- graph %>%
     tidygraph::activate("nodes") %>%
     dplyr::mutate(
-      community = get(node_com),
+      community = get(subgroup),
       graph_components = max(component),
       graph_order = tidygraph::graph_order()
     ) %>%
@@ -89,16 +92,25 @@ net_metrics_structure <- function(graph, node_com){
       graph_possible_edges = length(igraph::V(g)) * (length(igraph::V(g))-1),
       graph_triads_potential = triads[[1]],
       graph_triads_cut = triads[[2]] + triads[[3]],
-      graph_triads_line = triads[[4]] + triads[[5]] + triads[[6]] + triads[[7]] + triads[[8]] + triads[[11]],
-      graph_triads_partial = triads[[15]] + triads[[14]] + triads[[13]] + triads[[12]] + triads[[9]] + triads[[10]],
+      graph_triads_line =
+        triads[[4]] + triads[[5]] + triads[[6]] +
+        triads[[7]] + triads[[8]] + triads[[11]],
+      graph_triads_partial =
+        triads[[15]] + triads[[14]] + triads[[13]] +
+        triads[[12]] + triads[[9]] + triads[[10]],
       graph_triads_full = triads[[16]],
       graph_density_ties = (2 * dyads$mut + dyads$asym)/ graph_possible_edges,
       graph_density_pairs = (dyads$mut*2 + dyads$asym) / graph_size,
-      graph_central_between = igraph::centralization.betweenness(g)$centralization,
-      graph_central_degree = igraph::centralization.degree(g)$centralization,
-      graph_transitivity = igraph::transitivity(g),
-      graph_reciprocity = igraph::reciprocity(g, mode = "default"),
-      graph_reciprocity_ratio = igraph::reciprocity(g, mode = "ratio")
+      graph_central_between =
+        igraph::centralization.betweenness(g)$centralization,
+      graph_central_degree =
+        igraph::centralization.degree(g)$centralization,
+      graph_transitivity =
+        igraph::transitivity(g),
+      graph_reciprocity =
+        igraph::reciprocity(g, mode = "default"),
+      graph_reciprocity_ratio =
+        igraph::reciprocity(g, mode = "ratio")
     ) %>%
     tidygraph::morph(to_split, community, split_by = "nodes") %>%
     dplyr::mutate(

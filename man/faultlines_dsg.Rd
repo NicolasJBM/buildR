@@ -2,7 +2,7 @@
 % Please edit documentation in R/faultlines_dsg.R
 \name{faultlines_dsg}
 \alias{faultlines_dsg}
-\title{Computes the distances within and between sub-groups based on the number of common attributes (how many times members of a subgroup fall in the same category) for faultline analyses (personal procedure)}
+\title{Compute distances between subgroups}
 \usage{
 faultlines_dsg(x, subgroup)
 }
@@ -21,4 +21,7 @@ Computes the distances within and between sub-groups based on the number of comm
 make_discrete
 
 find_subgroups
+}
+\author{
+Nicolas Mangin
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/faultlines_fau.R
 \name{faultlines_fau}
 \alias{faultlines_fau}
-\title{Compute distances within and between sub-groups according to the procedure designed by Thatcher, Jehn, and Zanutto (2003) for faultlines analyses.}
+\title{Compute FAU distances between subgroups}
 \usage{
 faultlines_fau(x, subgroup)
 }
@@ -24,4 +24,7 @@ Thatcher, S. M. B., K. A. Jehn, and E. Zanutto. 2003. Cracks in Diversity Resear
 make_0_to_1
 
 find_subgroups
+}
+\author{
+Nicolas Mangin
 }

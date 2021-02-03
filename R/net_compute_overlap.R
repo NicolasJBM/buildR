@@ -1,4 +1,7 @@
-#' Add Jaccard coefficients to the edges of a tidygraph.
+#' @name net_compute_overlap
+#' @title Compute overlap metrics
+#' @author Nicolas Mangin
+#' @description Add Jaccard coefficients and other overlap metrics to the edges of a tidygraph.
 #' @param graph Tidygraph.
 #' @return A tidygraph with Jaccard coefficients.
 #' @importFrom tidygraph activate
@@ -11,22 +14,19 @@
 #' @export
 
 
-net_metrics_overlap <- function(graph){
+net_compute_overlap <- function(graph) {
   
-  edges <- NULL
   from <- NULL
   to <- NULL
   occ_from <- NULL
   weight <- NULL
-  name <- NULL
   occurrences <- NULL
-  
+
   nodes <- as.data.frame(tidygraph::activate(graph, "nodes"))
-  
-  if ("occurrences" %in% names(nodes)){
+
+  if ("occurrences" %in% names(nodes)) {
     addocc <- nodes %>%
       select(rank, occurrences)
-      
   } else {
     addocc <- graph %>%
       tidygraph::activate("edges") %>%
@@ -34,13 +34,13 @@ net_metrics_overlap <- function(graph){
       dplyr::filter(from == to) %>%
       dplyr::select(rank = from, occurrences = weight)
   }
-  
+
   occ_from <- addocc %>%
     dplyr::rename(from = rank, occ_from = occurrences)
-  
+
   occ_to <- addocc %>%
     dplyr::rename(to = rank, occ_to = occurrences)
-  
+
   graph %>%
     tidygraph::activate("edges") %>%
     dplyr::left_join(occ_from, by = "from") %>%

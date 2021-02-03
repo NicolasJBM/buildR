@@ -1,4 +1,7 @@
-#' Add Jaccard coefficients to the edges of a tidygraph.
+#' @name net_compute_attributes
+#' @title Compute network attributes for edges and nodes
+#' @author Nicolas Mangin
+#' @description Compute and append network attributes for both edges and nodes
 #' @param graph        Tidygraph.
 #' @param directed     Logical. Whether the graph id directed.
 #' @param weight_var   Character. Name of the variable containing weights to be used
@@ -27,7 +30,12 @@
 #' @importFrom dplyr mutate
 #' @export
 
-net_metrics_nodedge <- function(graph, directed = TRUE, weight_var = NULL, optimal_com = FALSE){
+net_compute_attributes <- function(
+  graph,
+  directed = TRUE,
+  weight_var = NULL,
+  optimal_com = FALSE
+){
   
   component <- NULL
   

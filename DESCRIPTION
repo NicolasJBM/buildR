@@ -1,5 +1,5 @@
 Package: buildR
-Title: Toolbox for Data Preparation
+Title: Toolbox for Data Transformation
 Version: 0.1.0
 Date: 2020-12-25
 Authors@R: 
@@ -19,18 +19,21 @@ RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Imports:
   knitr,
-  dplyr,
-  tidyr,
-  purrr,
-  forcats,
   stats,
+  snow,
+  doSNOW,
+  utils,
+  foreach,
+  purrr,
+  tidyr,
+  dplyr,
+  forcats,
   tibble,
-  gtools,
-  igraph,
   tidygraph,
+  igraph,
+  gtools,
+  stringr,
   intergraph,
   networkDynamic,
   ndtv,
-  network,
-  grDevices,
-  stringr
+  network
