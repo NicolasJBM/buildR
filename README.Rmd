@@ -36,7 +36,7 @@ Before you can install *buildR* itself, you will need to install from CRAN the f
 
 ```{r, eval = FALSE}
 install.packages(c(knitr,
-  "stats", "snow", "doSNOW", "utils", "foreach", "purrr", "tidyr",
+  "stats", "parallel", "pbapply", "utils", "purrr", "tidyr",
   "dplyr", "forcats", "tibble", "tidygraph", "igraph", "gtools",
   "stringr", "intergraph", "networkDynamic", "ndtv", "network"
   ), dependencies = TRUE)

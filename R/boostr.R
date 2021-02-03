@@ -2,16 +2,17 @@
 #' @title Parallelize tasks to speed-up processes
 #' @author Nicolas Mangin
 #' @description Parallelize a function applied over the rows of a tibble.
-#' @param x       Tibble. Data on which rows the function should be applied. Variables nales should be the parameters of the function applied.
+#' @param x       Tibble. Data on which rows the function should be applied. Variables names should be the parameters of the function applied.
 #' @param FUN     Function. Function to apply on the data.
 #' @param intovar Character. Variable where the results should be stored.
 #' @param threads Integer. Number of parallel threads.
 #' @param ...     Additional arguments to be passed to the function.
 #' @return The initial tibble with the results in the variable specified with intovar.
-#' @import foreach
-#' @importFrom doSNOW registerDoSNOW
-#' @importFrom snow makeSOCKcluster
-#' @importFrom snow stopCluster
+#' @importFrom parallel makeCluster
+#' @importFrom parallel clusterExport
+#' @importFrom parallel clusterEvalQ
+#' @importFrom parallel stopCluster
+#' @importFrom pbapply pblapply
 #' @importFrom utils txtProgressBar
 #' @importFrom utils setTxtProgressBar
 #' @importFrom purrr pmap
@@ -20,28 +21,34 @@
 
 
 boostr <- function(x, FUN, intovar, threads, ...) {
-  i <- NULL
+  id <- NULL
   result <- NULL
-
-  cl <- snow::makeSOCKcluster(threads)
-  doSNOW::registerDoSNOW(cl)
-  pb <- utils::txtProgressBar(max = nrow(x), style = 3)
-  progress <- function(n) utils::setTxtProgressBar(pb, n)
-  opts <- list(progress = progress)
 
   t1 <- Sys.time()
 
-  x$result <- foreach::foreach(seq_len(nrow(x)), .options.snow = opts) %dopar% {
-    purrr::pmap(x[i, ], FUN, ...)
-  }
+  x <- tibble::as_tibble(x)
 
-  close(pb)
-  snow::stopCluster(cl = cl)
+  y <- x %>%
+    tibble::rownames_to_column("id") %>%
+    dplyr::group_by(id) %>%
+    tidyr::nest()
 
-  x <- x[, setdiff(names(x), intovar)]
-  x <- tidyr::unnest(x, result)
+  nreps <- nrow(y)
+  cl <- parallel::makeCluster(threads)
+  invisible(parallel::clusterExport(cl = cl, varlist = c("nreps")))
+  invisible(parallel::clusterEvalQ(cl = cl, library(utils)))
+  result <- pbapply::pblapply(
+    cl = cl,
+    X = y$data,
+    FUN = FUN,
+    ...
+  )
+  parallel::stopCluster(cl)
+
+  x <- x %>%
+    dplyr::mutate(result = result)
+  x <- x[, names(x) != intovar]
   names(x) <- gsub("result", intovar, names(x))
-
   print(Sys.time() - t1)
 
   return(x)

@@ -1,7 +1,7 @@
 Package: buildR
-Title: Toolbox to prepare data and build constructs
+Title: Toolbox to Prepare Data and Build Constructs
 Version: 0.1.0
-Date: 2020-12-25
+Date: 2021-02-03
 Authors@R: 
     person(given = "Nicolas",
            family = "Mangin",
@@ -13,17 +13,16 @@ Encoding: UTF-8
 URL: https://github.com/NicolasJBM/buildR
 LazyData: true
 License: GPL-3 | file LICENSE
-Depends: R (>= 3.6)
+Depends: R (>= 4.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Imports:
   knitr,
   stats,
-  snow,
-  doSNOW,
   utils,
-  foreach,
+  parallel,
+  pbapply,
   purrr,
   tidyr,
   dplyr,

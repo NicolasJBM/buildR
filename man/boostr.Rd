@@ -7,7 +7,7 @@
 boostr(x, FUN, intovar, threads, ...)
 }
 \arguments{
-\item{x}{Tibble. Data on which rows the function should be applied. Variables nales should be the parameters of the function applied.}
+\item{x}{Tibble. Data on which rows the function should be applied. Variables names should be the parameters of the function applied.}
 
 \item{FUN}{Function. Function to apply on the data.}
 
