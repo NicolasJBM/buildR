@@ -32,11 +32,8 @@ boostr <- function(x, FUN, intovar, threads, ...) {
     tibble::rownames_to_column("id") %>%
     dplyr::group_by(id) %>%
     tidyr::nest()
-
-  nreps <- nrow(y)
+  
   cl <- parallel::makeCluster(threads)
-  invisible(parallel::clusterExport(cl = cl, varlist = c("nreps")))
-  invisible(parallel::clusterEvalQ(cl = cl, library(utils)))
   result <- pbapply::pblapply(
     cl = cl,
     X = y$data,
