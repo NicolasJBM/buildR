@@ -1,0 +1,29 @@
+---
+title: "transforming_variables"
+author: Nicolas Mangin
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{transforming_variables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(buildR)
+```
+
+
+Introduction
+
+
+*************
+
+## Transformation into discrete variables

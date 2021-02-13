@@ -1,0 +1,28 @@
+---
+title: "handling_networks"
+author: Nicolas Mangin
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{handling_networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(buildR)
+```
+
+
+Introduction
+
+
+*************
+
+## Create a network from an edgelist

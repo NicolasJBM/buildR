@@ -1,0 +1,30 @@
+---
+title: "computing_faultlines"
+author: Nicolas Mangin
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{computing_faultlines}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(buildR)
+```
+
+
+Introduction
+
+
+*************
+
+## Faultlines with
+
