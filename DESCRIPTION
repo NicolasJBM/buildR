@@ -19,6 +19,7 @@ RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Imports:
   knitr,
+  rmarkdown,
   stats,
   utils,
   parallel,

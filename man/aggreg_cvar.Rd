@@ -4,10 +4,12 @@
 \alias{aggreg_cvar}
 \title{Compute a coefficient of variation}
 \usage{
-aggreg_cvar(x)
+aggreg_cvar(x, na.rm = TRUE)
 }
 \arguments{
 \item{x}{numeric vector. Set of values for which the coefficient of variation should be computed.}
+
+\item{na.rm}{Logical. Should NAs be omitted.}
 }
 \value{
 A coefficient of variation for the numeric vector
