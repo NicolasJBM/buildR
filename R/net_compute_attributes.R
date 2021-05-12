@@ -49,7 +49,7 @@ net_compute_attributes <- function(
     graph <- graph %>%
       tidygraph::to_directed() %>%
       dplyr::mutate(
-        component = tidygraph::group_components(type = "weak"),
+        component = tidygraph::group_components(type = "strong"),
         cent_degree = tidygraph::centrality_degree(mode = "all"),
         cent_indegree = tidygraph::centrality_degree(mode = "in"),
         cent_outdegree = tidygraph::centrality_degree(mode = "out"),
@@ -94,6 +94,7 @@ net_compute_attributes <- function(
     graph <- graph %>%
       tidygraph::to_undirected() %>%
       dplyr::mutate(
+        component = tidygraph::group_components(type = "strong"),
         cent_degree = tidygraph::centrality_degree(mode = "all"),
         cent_betweenness = tidygraph::centrality_betweenness(),
         cent_alpha = tidygraph::centrality_alpha(),
