@@ -22,7 +22,6 @@
 transf_discretize <- function(x, method = "quantiles", nval = 2) {
   stopifnot(
     is.numeric(x),
-    is.integer(nval),
     method %in% c("quantiles", "kmeans")
   )
 
